@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_theme"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.user.cabbookingapp.ui.LoginActivity">
+
+
+
+    <ImageView
+
+        android:id="@+id/cabLoginImage"
+        android:layout_width="138dp"
+        android:layout_height="47dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="241dp"
+        android:src="@mipmap/car_logo" />
+
+
+    <Button
+        android:id="@+id/googleSignIn"
+        android:layout_width="185dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/cabLoginImage"
+        android:layout_marginTop="124dp"
+        android:layout_marginLeft="88dp"
+        android:layout_marginRight="87dp"
+        android:paddingLeft="2dp"
+        android:drawableLeft="@drawable/google_logo"
+        android:background="@drawable/rectangle_drawble"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:textSize="12dp"
+        android:text="@string/common_signin_button_text_long"
+        android:textColor="@android:color/white">
+
+    </Button>
+
+
+
+
+</RelativeLayout>

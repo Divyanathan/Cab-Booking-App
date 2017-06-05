@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_theme"
+    android:orientation="vertical"
+    tools:context="com.example.user.cabbookingapp.ui.BookCabActivity">
+
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/black"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:lineSpacingExtra="10sp"
+            android:paddingTop="12dp"
+            android:text="Book Cab"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
+            android:textStyle="normal"
+            tools:text="Book Cab" />
+
+        <ImageView
+            android:id="@+id/book_cab_profile_image"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="12dp" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/fromCircleTextView"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="26dp"
+                android:background="@drawable/circle_for_from_location" />
+
+            <TextView
+                android:id="@+id/toCircleTextView"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_below="@+id/fromCircleTextView"
+                android:layout_marginBottom="24dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="52dp"
+                android:background="@drawable/circle_for_to_location" />
+
+            <TextView
+                android:id="@+id/fromTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="13dp"
+                android:layout_toRightOf="@id/fromCircleTextView"
+                android:fontFamily="sans-serif-light"
+                android:text="From"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/fromLoctionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_below="@+id/fromTextView"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/fromCircleTextView"
+                android:fontFamily="sans-serif-medium"
+                android:text="Full Creative"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:textStyle="normal" />
+
+            <View
+                android:id="@+id/deviderTextView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/fromLoctionTextView"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="11dp"
+                android:layout_toRightOf="@id/fromCircleTextView"
+                android:background="#e6e6e6" />
+
+            <ImageView
+                android:id="@+id/doubleArrowImageView"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginBottom="45dp"
+                android:layout_marginLeft="281dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="45dp"
+                android:src="@mipmap/double_arrow" />
+
+            <TextView
+                android:id="@+id/toTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_below="@+id/deviderTextView"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/toCircleTextView"
+                android:fontFamily="sans-serif-light"
+                android:text="To"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/toLoctionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_below="@+id/toTextView"
+                android:layout_marginBottom="13dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/toCircleTextView"
+                android:fontFamily="sans-serif-medium"
+                android:text="Adayar"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:textStyle="normal" />
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="39dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        tools:text="Select Timings" />
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:horizontalSpacing="12dp"
+        android:numColumns="3"
+        android:verticalSpacing="10dp">
+
+    </GridView>
+
+
+</LinearLayout>

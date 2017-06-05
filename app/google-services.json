@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "41392016827",
+    "project_id": "cab-booking-app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41392016827:android:7ca2de6e99f7bf07",
+        "android_client_info": {
+          "package_name": "com.example.user.cabapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "41392016827-ppnds39le8hgob164n397kear6mtoogk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmRtTtDfENEN4x4-uwIQN304vU_RCX-xw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41392016827:android:4c13b0f9aae60354",
+        "android_client_info": {
+          "package_name": "com.example.user.cabbookingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "41392016827-113b1likr8fe86dr18lq67bnir0dhiit.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.cabbookingapp",
+            "certificate_hash": "f8d8ac6693ba6dcaa96d7656842b39e4bb429136"
+          }
+        },
+        {
+          "client_id": "41392016827-ppnds39le8hgob164n397kear6mtoogk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmRtTtDfENEN4x4-uwIQN304vU_RCX-xw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
