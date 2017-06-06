@@ -33,6 +33,7 @@ public class UserActivity extends AppCompatActivity {
                 .transform(new RoundedTransformation(100, 1))
                 .into((ImageView)findViewById(R.id.usermage));
     }
+
 }
 
 

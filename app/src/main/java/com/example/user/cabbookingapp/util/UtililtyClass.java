@@ -34,6 +34,7 @@ public class UtililtyClass {
     public  static final String CANCELLING_URL="http://adaptiveufest.appspot.com/cancelBooking";
     public  static final String FEED_BACK_URL="http://my.loopto.do/forms/process?json=1&t=1492437716399";
     public  static final String GET_BOOKING_TODAY_URL="http://adaptiveufest.appspot.com/getBooking";
+    public static final  String PROFILE_PIC_URL="https://www.googleapis.com/plus/v1/people/me?access_token=";
     /**
      * Intent
      */
@@ -41,6 +42,7 @@ public class UtililtyClass {
     public static final String HTTP_REQUEST_METHOD_INTENT="request_method";
     public static final String HTTP_PLAY_LOADP_INTENT="pay_laod";
     public static final String HTTP_REQUEST_PROPERTIES_INTENT="request_properties";
+    public static final String HTTP_URL_HELPER="http_url_helper";
     public static final String GET_API_INTENT ="rest_api";
     /**
      * BroadCast Receiver
@@ -52,4 +54,6 @@ public class UtililtyClass {
     public static final  String ROUT_API="get_rout";
     public static final  String TIMING_API="get_timing";
     public static final  String CONTACT_API="get_contact";
+    public static final  String PROFILE_API="get_user_profile_pic";
+
 }

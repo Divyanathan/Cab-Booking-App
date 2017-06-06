@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.UserActivity" />
-        <activity android:name=".ui.SplashScreenActivity"></activity>
+        <activity android:name=".ui.SplashScreenActivity" />
         <activity android:name=".ui.SyncingActivity" />
 
         <service android:name=".service.RoutAndTimingService" />
@@ -31,10 +31,9 @@
         <activity android:name=".ui.GetRoutActivity" />
         <activity
             android:name=".ui.BookCabActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-
-
-        </activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity android:name=".ui.UserProfileActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 
 </manifest>

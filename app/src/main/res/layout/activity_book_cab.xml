@@ -18,15 +18,15 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
             android:lineSpacingExtra="10sp"
-            android:paddingTop="12dp"
+            android:gravity="center"
             android:text="Book Cab"
             android:textAlignment="center"
             android:textColor="#ffffff"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textStyle="normal"
             tools:text="Book Cab" />
 
@@ -34,7 +34,7 @@
             android:id="@+id/book_cab_profile_image"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginRight="7dp"
+            android:layout_marginRight="15dp"
             android:layout_marginTop="12dp" />
 
     </LinearLayout>
@@ -155,23 +155,43 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="39dp"
         android:fontFamily="sans-serif-medium"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:textStyle="normal"
+        android:text="Select Timings"
         tools:text="Select Timings" />
 
     <GridView
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="15dp"
+        android:id="@+id/timingsGridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:horizontalSpacing="12dp"
+        android:horizontalSpacing="13dp"
         android:numColumns="3"
-        android:verticalSpacing="10dp">
+        android:verticalSpacing="16dp">
 
     </GridView>
+    
+    <Button
+        android:textAllCaps="false"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="45dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:text="Book Cab"
+        android:layout_width="match_parent"
+        android:background="@drawable/sected_timing"
+        android:layout_height="54dp"
+        />
 
 
 </LinearLayout>

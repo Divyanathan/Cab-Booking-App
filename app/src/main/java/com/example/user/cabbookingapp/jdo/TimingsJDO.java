@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by user on 17/05/17.
  */
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TimingsJDO implements Serializable {
 
 

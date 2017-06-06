@@ -2,6 +2,7 @@ package com.example.user.cabbookingapp.httphelper;
 
 import com.example.user.cabbookingapp.jdo.ContentTypeJDO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
  * Created by user on 01/06/17.
  */
 
-public class HttpUrlHelper {
+public class HttpUrlHelper  implements Serializable{
 
     String Url;
     String HttpRequetMethod;

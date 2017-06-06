@@ -3,25 +3,27 @@ package com.example.user.cabbookingapp.ui;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.user.cabbookingapp.R;
-import com.example.user.cabbookingapp.httphelper.HttpConnection;
 import com.example.user.cabbookingapp.httphelper.HttpUrlHelper;
 import com.example.user.cabbookingapp.jdo.ContentTypeJDO;
 import com.example.user.cabbookingapp.jdo.CustomerJDO;
 import com.example.user.cabbookingapp.jdo.UserDetailJDO;
-import com.example.user.cabbookingapp.jdo.UserProfilePic;
+import com.example.user.cabbookingapp.service.RoutAndTimingService;
 import com.example.user.cabbookingapp.util.UtililtyClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.auth.GoogleAuthException;
@@ -51,6 +53,7 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setMessage("Singing in");
@@ -59,16 +62,17 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
         mSinginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isDataAvailable()) {
+                if (isDataAvailable()) {
                     mProgressDialog.show();
                     startActivityForResult(AccountPicker.newChooseAccountIntent(null, null, new String[]{"com.google"}, false, null, null, null, null), REQ_CODE);
                     Log.d(TAG, "googleSingIn: ");
-                }else {
+                } else {
                     Toast.makeText(LoginActivity.this, "No Internet is available", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
+        //register the receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReciverForRoutAndTime, new IntentFilter(UtililtyClass.GET_ROUT_RECIVER));
 
     }
 
@@ -77,64 +81,18 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
     protected void onActivityResult(int pRequestCode, int pResultCode, Intent pIntent) {
         super.onActivityResult(pRequestCode, pResultCode, pIntent);
 
-
         if (pRequestCode == REQ_CODE) {
 
-            mProgressDialog.dismiss();
+            mProgressDialog.cancel();
             Log.d(TAG, "onActivityResult:  google signin");
             if (pIntent != null) {
+                mProgressDialog.show();
                 new GoogleSignInClass().execute(pIntent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
                 Log.d(TAG, "onActivityResult: " + pIntent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
             }
         }
     }
 
-
-    void navigateToUser(String pContactDeatils) {
-
-        ObjectMapper lObjectMapper = new ObjectMapper();
-        UserDetailJDO lUserJDO = new UserDetailJDO();
-        try {
-            lUserJDO = lObjectMapper.readValue(pContactDeatils, UserDetailJDO.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Intent lUserIntent = new Intent(LoginActivity.this, SyncingActivity.class);
-        lUserIntent.putExtra(UtililtyClass.USER_INTENT, lUserJDO.getCustomer());
-        if (lUserJDO.getResponse().equalsIgnoreCase("true")) {
-
-            CustomerJDO lCustomerJdo = lUserJDO.getCustomer();
-            Log.d(TAG, "navigateToUser: " + lUserJDO.getCustomer().getName());
-
-            getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
-                    .edit()
-                    .putString(UtililtyClass.USER_NAME, lCustomerJdo.getName())
-                    .putString(UtililtyClass.USER_KEY, lCustomerJdo.getKey())
-                    .putString(UtililtyClass.USER_STATUS, lCustomerJdo.getStatus())
-                    .putString(UtililtyClass.USER_PREFERED_SERVICE, lCustomerJdo.getPreferredService())
-                    .putString(UtililtyClass.USRE_PREFERED_STAFF, lCustomerJdo.getPreferedStaff())
-                    .putString(UtililtyClass.USER_VEHICAL_STATUS, lCustomerJdo.getVehiclePassStatus())
-                    .putString(UtililtyClass.USER_LAST_NAME, lCustomerJdo.getLastName())
-                    .putString(UtililtyClass.USER_LOGIN_ID, lCustomerJdo.getLoginId())
-                    .putString(UtililtyClass.USER_FIRST_NAME, lCustomerJdo.getFirstName())
-                    .putString(UtililtyClass.USER_JSON, pContactDeatils)
-                    .commit();
-
-            startActivity(lUserIntent);
-            overridePendingTransition(R.anim.enter_from_right,R.anim.exit_to_bottom);
-        } else {
-            Log.d(TAG, "navigateToUser: " + "authentication Failed");
-        }
-
-    }
-
-    void navigateToUser(){
-
-        Intent lUserIntent=new Intent(LoginActivity.this,BookCabActivity.class);
-        startActivity(lUserIntent);
-
-    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -143,6 +101,19 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
 
     class GoogleSignInClass extends AsyncTask<String, Void, String> {
 
+
+        ProgressDialog lProgressDialog = new ProgressDialog(LoginActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            lProgressDialog.setMessage("Retrive data");
+            lProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//            lProgressDialog.show();
+
+            mProgressDialog.setMessage("Retrive data");
+//            mProgressDialog.show();
+        }
 
         @Override
         protected String doInBackground(String... pParams) {
@@ -154,99 +125,112 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
             String lAccountName = pParams[0];
             String scopes = "oauth2:profile email";
             try {
+
+                //get the access token for the user from the google
                 mToken = GoogleAuthUtil.getToken(getApplicationContext(), lAccountName, scopes);
 
                 Log.d(TAG, "doInBackground: " + mToken);
-                mProgressDialog.cancel();
+
+                //payload to get the contact details  from REST API
+                JSONObject lJsonObject = new JSONObject();
+                lJsonObject.put(UtililtyClass.CONTACT_CODE, mToken);
+                lJsonObject.put(UtililtyClass.COMPANY_KEY, "084adf34-b48d-4bb7-8795-6a827025a57c");
+                lJsonObject.toString();
+
+                //get the contact details From REST API
+                HttpUrlHelper lGetContactHttpUrlHelper = getTheHttpUrlHelper(UtililtyClass.CONTACT_URL, "POST", lJsonObject.toString());
+                Intent lGetContactIntent = new Intent(LoginActivity.this, RoutAndTimingService.class);
+                lGetContactIntent.putExtra(UtililtyClass.HTTP_URL_HELPER, lGetContactHttpUrlHelper);
+                lGetContactIntent.putExtra(UtililtyClass.GET_API_INTENT, UtililtyClass.CONTACT_API);
+                startService(lGetContactIntent);
+
+
+                //get the Profile Pic of the User From Google
+                HttpUrlHelper lProfilePicHttpUrlHelper = getTheHttpUrlHelper(UtililtyClass.PROFILE_PIC_URL + mToken, "GET", "no_pay_load");
+                Intent lgetProfilePicHelper = new Intent(LoginActivity.this, RoutAndTimingService.class);
+                lgetProfilePicHelper.putExtra(UtililtyClass.HTTP_URL_HELPER, lProfilePicHttpUrlHelper);
+                lgetProfilePicHelper.putExtra(UtililtyClass.GET_API_INTENT, UtililtyClass.PROFILE_API);
+                startService(lgetProfilePicHelper);
+
+                //get the Route
+                HttpUrlHelper lGetTheRoute = getTheHttpUrlHelper(UtililtyClass.ROUT_URL, "GET", "no_pay_load");
+                Intent lGetTheRouteIntent = new Intent(LoginActivity.this, RoutAndTimingService.class);
+                lGetTheRouteIntent.putExtra(UtililtyClass.HTTP_URL_HELPER, lGetTheRoute);
+                lGetTheRouteIntent.putExtra(UtililtyClass.GET_API_INTENT, UtililtyClass.ROUT_API);
+                startService(lGetTheRouteIntent);
+
+                //get the Route Timings
+                HttpUrlHelper lGetTimgsHelper = getTheHttpUrlHelper(UtililtyClass.TIMING_URL, "GET", "no_pay_load");
+                Intent lGetTimingsHelper = new Intent(LoginActivity.this, RoutAndTimingService.class);
+                lGetTimingsHelper.putExtra(UtililtyClass.HTTP_URL_HELPER, lGetTimgsHelper);
+                lGetTimingsHelper.putExtra(UtililtyClass.GET_API_INTENT, UtililtyClass.TIMING_API);
+                startService(lGetTimingsHelper);
+
             } catch (UserRecoverableAuthException e) {
                 startActivityForResult(e.getIntent(), REQ_CODE);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (GoogleAuthException e) {
                 e.printStackTrace();
-            }
-
-
-            /**
-             * send the post request to get the Account details to the Rest Api
-             */
-            JSONObject lJsonObject = new JSONObject();
-            try {
-                lJsonObject.put(UtililtyClass.CONTACT_CODE, mToken);
-                lJsonObject.put(UtililtyClass.COMPANY_KEY, "084adf34-b48d-4bb7-8795-6a827025a57c");
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
-            lJsonObject.toString();
-            ArrayList<ContentTypeJDO> lContentType = new ArrayList<>();
-//
-//            ContentTypeJDO lContentTypeJDo = new ContentTypeJDO();
-//            lContentTypeJDo.setKey("Content-Type");
-//            lContentTypeJDo.setValue("application/json");
-//            lContentType.add(lContentTypeJDo);
-//            HttpUrlHelper lHttpHelper = new HttpUrlHelper();
-//
-//            lHttpHelper.setUrl(UtililtyClass.CONTACT_URL);
-//            lHttpHelper.setPayload(lJsonObject.toString());
-//            lHttpHelper.setHttpRequetMethod("POST");
-//            lHttpHelper.setContentType(lContentType);
-
-            HttpUrlHelper lProfilePicHttpUrlHelper=getTheProfilePic();
-
-            HttpConnection lHttpConnection = new HttpConnection();
-            String lResponse = lHttpConnection.getTheResponse(lProfilePicHttpUrlHelper);
-
-            Log.d(TAG, "doInBackground:  profile pic "+lResponse);
-
-            ObjectMapper lObjecMaper=new ObjectMapper();
-            try {
-                UserProfilePic lUerProfilePic=lObjecMaper.readValue(lResponse,UserProfilePic.class);
-                getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE,Context.MODE_PRIVATE)
-                        .edit()
-                        .putString(UtililtyClass.USER_IMAGE_URL,lUerProfilePic.getImage().get("url"))
-                        .commit();
-                navigateToUser();
-                Log.d(TAG, "doInBackground: url"+lUerProfilePic.getImage().get("url"));
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            return lResponse;
+
+            return null;
         }
 
         @Override
         protected void onPostExecute(String pResult) {
             super.onPostExecute(pResult);
+//            lProgressDialog.cancel();
             Log.d(TAG, "onPostExecute: " + pResult);
-            if (pResult != null) {
-//                navigateToUser(pResult);
-                Log.d(TAG, "onPostExecute: ");
-            }
         }
     }
 
-    public boolean isDataAvailable(){
-        ConnectivityManager lConnectivityManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    public boolean isDataAvailable() {
+        ConnectivityManager lConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo lActiveNetworkInfo = lConnectivityManager.getActiveNetworkInfo();
-        if(lActiveNetworkInfo != null){
+        if (lActiveNetworkInfo != null) {
             return true;
         }
         return false;
     }
 
-    HttpUrlHelper getTheProfilePic(){
+    HttpUrlHelper getTheHttpUrlHelper(String pUrl, String pRequestMethod, String pPayLoad) {
 
         ArrayList<ContentTypeJDO> lContentType = new ArrayList<>();
         ContentTypeJDO lContentTypeJDo = new ContentTypeJDO();
         lContentTypeJDo.setKey("Content-Type");
         lContentTypeJDo.setValue("application/json");
         lContentType.add(lContentTypeJDo);
-        HttpUrlHelper lHttpHelper = new HttpUrlHelper();
 
-        lHttpHelper.setUrl("https://www.googleapis.com/plus/v1/people/me?access_token="+mToken);
-        lHttpHelper.setHttpRequetMethod("GET");
+        HttpUrlHelper lHttpHelper = new HttpUrlHelper();
+        lHttpHelper.setUrl(pUrl);
+        lHttpHelper.setHttpRequetMethod(pRequestMethod);
+        lHttpHelper.setPayload(pPayLoad);
         lHttpHelper.setContentType(lContentType);
 
         return lHttpHelper;
     }
 
+    BroadcastReceiver mReciverForRoutAndTime = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mProgressDialog.cancel();
+            mProgressDialog.setMessage("Singning in");
+            Intent lBookCabIntent = new Intent(LoginActivity.this, BookCabActivity.class);
+            startActivity(lBookCabIntent);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReciverForRoutAndTime);
+
+        Log.d(TAG, "onDestroy: ");
+        super.onDestroy();
+
+    }
 }
