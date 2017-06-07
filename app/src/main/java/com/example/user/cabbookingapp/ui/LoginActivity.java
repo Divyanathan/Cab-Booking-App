@@ -39,6 +39,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.example.user.cabbookingapp.common.CommonClass.getTheHttpUrlHelper;
+
 
 public class LoginActivity extends Activity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -53,6 +55,16 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Log.d(TAG, "onCreate: " + getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_USER_LOGED_IN, false));
+        if (getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_USER_LOGED_IN, false)) {
+
+
+            Intent lBookCabIntent = new Intent(LoginActivity.this, BookCabActivity.class);
+            startActivity(lBookCabIntent);
+            finish();
+            Log.d(TAG, "onCreate: User loged in already");
+
+        }
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -198,30 +210,20 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
         return false;
     }
 
-    HttpUrlHelper getTheHttpUrlHelper(String pUrl, String pRequestMethod, String pPayLoad) {
-
-        ArrayList<ContentTypeJDO> lContentType = new ArrayList<>();
-        ContentTypeJDO lContentTypeJDo = new ContentTypeJDO();
-        lContentTypeJDo.setKey("Content-Type");
-        lContentTypeJDo.setValue("application/json");
-        lContentType.add(lContentTypeJDo);
-
-        HttpUrlHelper lHttpHelper = new HttpUrlHelper();
-        lHttpHelper.setUrl(pUrl);
-        lHttpHelper.setHttpRequetMethod(pRequestMethod);
-        lHttpHelper.setPayload(pPayLoad);
-        lHttpHelper.setContentType(lContentType);
-
-        return lHttpHelper;
-    }
 
     BroadcastReceiver mReciverForRoutAndTime = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             mProgressDialog.cancel();
             mProgressDialog.setMessage("Singning in");
+            //mark the user as loged in
+            getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
+                    .edit()
+                    .putBoolean(UtililtyClass.IS_USER_LOGED_IN, true)
+                    .commit();
             Intent lBookCabIntent = new Intent(LoginActivity.this, BookCabActivity.class);
             startActivity(lBookCabIntent);
+            finish();
         }
     };
 

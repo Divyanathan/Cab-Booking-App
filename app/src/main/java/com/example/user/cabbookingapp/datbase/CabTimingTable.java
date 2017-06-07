@@ -16,19 +16,19 @@ import java.util.ArrayList;
 
 public class CabTimingTable {
 
-    private static final String TABLE_NAME = "timing_table";
-    private static final String COLUMN_ID = "id";
-    private static final String COLUMN_STATUS = "status";
-    private static final String COLUMN_SERVICE_NAME = "service_name";
-    private static final String COLUMN_COLOR_CODE = "color_code";
-    private static final String COLUMN_START_DATE_STRIG = "start_date_in_string";
-    private static final String COLUMN_START_DATE_LONG = "start_date_in_long";
-    private static final String COLUMN_END_DATE_STRIG = "end_date_in_string";
-    private static final String COLUMN_END_DATE_LONG = "end_date_in_long";
-    private static final String COLUMN_SERVICE_COST = "service_cost";
-    private static final String COLUMN_COMPANY_KEY = "company_key";
-    private static final String COULUMN_PROVIDER_LIST="provider_list";
-    private static final String TAG = "CabTimingTable";
+    public static final String TABLE_NAME = "timing_table";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_STATUS = "status";
+    public static final String COLUMN_SERVICE_NAME = "service_name";
+    public static final String COLUMN_COLOR_CODE = "color_code";
+    public static final String COLUMN_START_DATE_STRIG = "start_date_in_string";
+    public static final String COLUMN_START_DATE_LONG = "start_date_in_long";
+    public static final String COLUMN_END_DATE_STRIG = "end_date_in_string";
+    public static final String COLUMN_END_DATE_LONG = "end_date_in_long";
+    public static final String COLUMN_SERVICE_COST = "service_cost";
+    public static final String COLUMN_COMPANY_KEY = "company_key";
+    public static final String COULUMN_PROVIDER_LIST="provider_list";
+    public static final String TAG = "CabTimingTable";
     Context mContext;
     DataBaseHelper mDataBaseHelper;
     SQLiteDatabase mSqliteDataBase;
@@ -92,6 +92,11 @@ public class CabTimingTable {
             mSqliteDataBase.setTransactionSuccessful();
             mSqliteDataBase.endTransaction();
         }
+    }
+    
+    public Cursor getTimingDetails(String pTimingID){
+        
+        return mSqliteDataBase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + "'" + pTimingID + "'", null);
     }
 
     public boolean isDataExsit(String pTimingId) {

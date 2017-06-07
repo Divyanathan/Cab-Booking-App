@@ -58,12 +58,6 @@ public class RoutAndTimingService extends IntentService {
 
 
         try {
-            //setting the HttpContention Component using HttpHelper class
-//            mHttpUrlHelper.setUrl(pIntent.getStringExtra(UtililtyClass.URL_INTENT));
-//            mHttpUrlHelper.setHttpRequetMethod(pIntent.getStringExtra(UtililtyClass.HTTP_REQUEST_METHOD_INTENT));
-//            ArrayList<ContentTypeJDO> lContentTypeJDOArrayList = new ArrayList<>();
-//            lContentTypeJDOArrayList.add((ContentTypeJDO) pIntent.getSerializableExtra(UtililtyClass.HTTP_REQUEST_PROPERTIES_INTENT));
-//            mHttpUrlHelper.setContentType(lContentTypeJDOArrayList);
 
             HttpConnection mHttpConnection = new HttpConnection();
             mHttpUrlHelper = (HttpUrlHelper) pIntent.getSerializableExtra(UtililtyClass.HTTP_URL_HELPER);
@@ -71,30 +65,50 @@ public class RoutAndTimingService extends IntentService {
             //hitting the REST Api and get the response
             String mResponse = mHttpConnection.getTheResponse(mHttpUrlHelper);
             String getApi = pIntent.getStringExtra(UtililtyClass.GET_API_INTENT);
-
             Log.d(TAG, "onHandleIntent: " + getApi);
-            //check is this rout api if yes store the value in route table
 
+            //get the route
             if (getApi.equals(UtililtyClass.ROUT_API)) {
+
                 mUserDetailJDoArrayList = mObjectMapper.readValue(mResponse, new TypeReference<List<CustomerJDO>>() {
                 });
                 mCabRouteTable.addRoutDetails(mUserDetailJDoArrayList);
                 Log.d(TAG, "onHandleIntent: Rout APi " + mUserDetailJDoArrayList.get(1).getName());
+
             }
-            //check is this timing api if yes store the value in timing table
+
+            //get the timing
             else if (pIntent.getStringExtra(UtililtyClass.GET_API_INTENT).equals(UtililtyClass.TIMING_API)) {
+
                 mTimingJDOArrayList = mObjectMapper.readValue(mResponse, new TypeReference<List<TimingsJDO>>() {
                 });
                 mCabTimingTable.addTimings(mTimingJDOArrayList);
                 Log.d(TAG, "onHandleIntent: Timing Api " + mTimingJDOArrayList.get(1).getColorcode());
-            } else if (getApi.equals(UtililtyClass.CONTACT_API)) {
+
+            }
+
+            //get the Contact
+            else if (getApi.equals(UtililtyClass.CONTACT_API)) {
+
                 Log.d(TAG, "onHandleIntent: contact response " + mResponse);
                 storeContactDetails(mResponse);
-            } else if (getApi.equals(UtililtyClass.PROFILE_API)) {
+
+            }
+            //get the Profile image of the user
+            else if (getApi.equals(UtililtyClass.PROFILE_API)) {
+
                 Log.d(TAG, "onHandleIntent: profile pic response " + mResponse);
                 storeProfilePic(mResponse);
+
+            }
+            //book the cab
+            else if (getApi.equals(UtililtyClass.CAB_BOOKING_API)){
+
+                Log.d(TAG, "onHandleIntent: cab booking api response "+mResponse);
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -111,8 +125,6 @@ public class RoutAndTimingService extends IntentService {
             e.printStackTrace();
         }
 
-//        Intent lUserIntent = new Intent(LoginActivity.this, SyncingActivity.class);
-//        lUserIntent.putExtra(UtililtyClass.USER_INTENT, lUserJDO.getCustomer());
         if (lUserJDO.getResponse().equalsIgnoreCase("true")) {
 
             CustomerJDO lCustomerJdo = lUserJDO.getCustomer();
@@ -131,9 +143,6 @@ public class RoutAndTimingService extends IntentService {
                     .putString(UtililtyClass.USER_FIRST_NAME, lCustomerJdo.getFirstName())
                     .putString(UtililtyClass.USER_JSON, pContactDeatils)
                     .commit();
-
-//            startActivity(lUserIntent);
-//            overridePendingTransition(R.anim.enter_from_right,R.anim.exit_to_bottom);
         } else {
             Log.d(TAG, "navigateToUser: " + "authentication Failed");
         }

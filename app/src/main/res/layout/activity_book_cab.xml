@@ -177,7 +177,7 @@
         android:verticalSpacing="16dp">
 
     </GridView>
-    
+
     <Button
         android:textAllCaps="false"
         android:layout_marginLeft="60dp"
@@ -185,6 +185,7 @@
         android:layout_marginTop="45dp"
         android:fontFamily="sans-serif-medium"
         android:textColor="@color/white"
+        android:onClick="bookCab"
         android:textAlignment="center"
         android:textSize="20dp"
         android:text="Book Cab"

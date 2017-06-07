@@ -16,13 +16,13 @@ import java.util.ArrayList;
 
 public class CabRouteTable {
 
-    private static final String TABLE_NAME = "route_table";
-    private static final String COLUMN_ID = "routt_id";
-    private static final String COLUMN_ROUTE_NAME = "route_name";
-    private static final String COLUMN_STATUS = "status";
-    private static final String COLUMC_COMPANY_ID = "company_id";
-    private static final String COLUMC_VEHICAL_STATUS = "vehical_status";
-    private static final String TAG = "CabRouteTable";
+    public static final String TABLE_NAME = "route_table";
+    public static final String COLUMN_ID = "routt_id";
+    public static final String COLUMN_ROUTE_NAME = "route_name";
+    public static final String COLUMN_STATUS = "status";
+    public static final String COLUMC_COMPANY_ID = "company_id";
+    public static final String COLUMC_VEHICAL_STATUS = "vehical_status";
+    public static final String TAG = "CabRouteTable";
     DataBaseHelper mDataBseHelper;
     SQLiteDatabase mSqliteDataBase;
     Context mContext;
@@ -76,6 +76,15 @@ public class CabRouteTable {
             mSqliteDataBase.setTransactionSuccessful();
             mSqliteDataBase.endTransaction();
         }
+
+    }
+
+    public Cursor getRoute() {
+
+
+        Cursor lContactCursor = mSqliteDataBase.rawQuery("SELECT "+COLUMN_ROUTE_NAME+","+COLUMN_ID+" FROM " + TABLE_NAME , null);
+
+        return lContactCursor;
 
     }
 

@@ -31,9 +31,12 @@
         <activity android:name=".ui.GetRoutActivity" />
         <activity
             android:name=".ui.BookCabActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".ui.UserProfileActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".ui.UserProfileActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".ui.SearchLocationActivity"
+            android:label="Search Places"></activity>
     </application>
 
 </manifest>
