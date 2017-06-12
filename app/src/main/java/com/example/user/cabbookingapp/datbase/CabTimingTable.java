@@ -99,6 +99,12 @@ public class CabTimingTable {
         return mSqliteDataBase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + "'" + pTimingID + "'", null);
     }
 
+    public int getTheBookinTime(String pRouteID){
+
+        Cursor lContactCursor = mSqliteDataBase.rawQuery("SELECT "+COLUMN_START_DATE_LONG+" FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + "'" + pRouteID + "'", null);
+        lContactCursor.moveToFirst();
+        return lContactCursor.getInt(0);
+    }
     public boolean isDataExsit(String pTimingId) {
         Log.d(TAG, "isDataExsit: ");
         Cursor lCursor = mSqliteDataBase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + "'" + pTimingId + "'", null);
@@ -106,6 +112,18 @@ public class CabTimingTable {
             return true;
         }
         return false;
+    }
+    public String getServiceName(String pTimingID){
+        Cursor lContactCursor = mSqliteDataBase.rawQuery("SELECT "+COLUMN_SERVICE_NAME+" FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + "'" + pTimingID + "'", null);
+        lContactCursor.moveToFirst();
+        return lContactCursor.getString(0);
+    }
+    public void deleteTimingTable(){
+        mSqliteDataBase.delete(TABLE_NAME,null,null);
+//        Cursor lDeltetCursor=mSqliteDataBase.rawQuery("DELETE TABLE " + TABLE_NAME ,null);
+//        if (lDeltetCursor.getCount()>0){
+//            Log.d(TAG, "deleteRouteTable: tabel has been deleted");
+//        }
     }
     public void   close(){
         mDataBaseHelper.close();

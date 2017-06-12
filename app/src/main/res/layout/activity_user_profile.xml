@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="16dp"
+            android:background="@color/background_theme"
             android:orientation="vertical">
 
             <TextView
@@ -116,33 +117,44 @@
                 </LinearLayout>
 
                 <Switch
+                    android:id="@+id/reminderSwitch"
                     android:layout_width="45dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:theme="@style/SCBSwitch" />
             </LinearLayout>
             <!--android:background="@color/black"-->
 
-            <TextView
+            <LinearLayout
+                android:onClick="feedBackButton"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:fontFamily="sans-serif-light"
-                android:text="FeedBack"
-                android:textColor="@color/black"
-                android:textSize="15dp"
-                android:textStyle="normal" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="Feedback"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/feedbadkTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Submit Feedback"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
 
             <TextView
-                android:id="@+id/feedbadkTextView"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginTop="2dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Submit FeedBack"
-                android:textColor="@color/black"
-                android:textSize="15dp"
-                android:textStyle="normal" />
-
-            <TextView
+                android:id="@+id/signOutTextView"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:layout_marginTop="30dp"

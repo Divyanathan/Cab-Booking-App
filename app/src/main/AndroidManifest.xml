@@ -14,7 +14,6 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.LoginActivity"
-            android:label="@string/sing_in_activity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,21 +21,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.UserActivity" />
         <activity android:name=".ui.SplashScreenActivity" />
-        <activity android:name=".ui.SyncingActivity" />
 
         <service android:name=".service.RoutAndTimingService" />
 
-        <activity android:name=".ui.GetRoutActivity" />
         <activity
             android:name=".ui.BookCabActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.UserProfileActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".ui.SearchLocationActivity"
-            android:label="Search Places"></activity>
+        <activity
+            android:name=".ui.SearchLocationActivity"
+            android:label="Search Places" />
+
+        <receiver android:name=".reciver.ReminderReciver" />
+
+        <activity android:name=".ui.FeedBackActivity"
+            android:label="Feedback"></activity>
     </application>
 
 </manifest>

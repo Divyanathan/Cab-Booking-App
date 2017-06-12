@@ -81,11 +81,15 @@ public class CabRouteTable {
 
     public Cursor getRoute() {
 
-
         Cursor lContactCursor = mSqliteDataBase.rawQuery("SELECT "+COLUMN_ROUTE_NAME+","+COLUMN_ID+" FROM " + TABLE_NAME , null);
-
         return lContactCursor;
 
+    }
+
+    public String getRouteName(String pRouteID){
+        Cursor lContactCursor = mSqliteDataBase.rawQuery("SELECT "+COLUMN_ROUTE_NAME+" FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + "'" + pRouteID + "'", null);
+        lContactCursor.moveToFirst();
+        return lContactCursor.getString(0);
     }
 
     public boolean isDataExsit(String pRoutID) {
@@ -97,6 +101,14 @@ public class CabRouteTable {
             return true;
         }
         return false;
+    }
+    
+    public void deleteRouteTable(){
+        mSqliteDataBase.delete(TABLE_NAME,null,null);
+//        Cursor lDeltetCursor=mSqliteDataBase.rawQuery("DELETE TABLE " + TABLE_NAME ,null);
+//        if (lDeltetCursor.getCount()>0){
+//            Log.d(TAG, "deleteRouteTable: tabel has been deleted");
+//        }
     }
 
     public void close() {

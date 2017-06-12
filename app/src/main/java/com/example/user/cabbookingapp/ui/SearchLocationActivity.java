@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.user.cabbookingapp.R;
 import com.example.user.cabbookingapp.adapter.SearchLocationAdapter;
+import com.example.user.cabbookingapp.common.CommonClass;
 import com.example.user.cabbookingapp.datbase.CabRouteTable;
 import com.example.user.cabbookingapp.jdo.RouteJDO;
 import com.example.user.cabbookingapp.listener.RecyclerItemClickListener;
@@ -90,7 +91,7 @@ public class SearchLocationActivity extends AppCompatActivity {
         mMicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isDataAvailable()) {
+                if (CommonClass.isDataAvailable(SearchLocationActivity.this)) {
                     Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                     intent.putExtra(RecognizerIntent.LANGUAGE_MODEL_FREE_FORM,
                             RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -133,7 +134,6 @@ public class SearchLocationActivity extends AppCompatActivity {
                 }
 
                 mSearchLocationAdapter.notifyDataSetChanged();
-
             }
 
             @Override
@@ -145,6 +145,7 @@ public class SearchLocationActivity extends AppCompatActivity {
     }
 
 
+    //get rout from the database
     void getRoute() {
 
         Cursor lRoutCursor = mRooteTable.getRoute();
@@ -184,7 +185,6 @@ public class SearchLocationActivity extends AppCompatActivity {
                 for (int i = 0; i < lResult.size(); i++) {
                     Log.d(TAG, "onActivityResult: data " + lResult.get(i));
                 }
-                Log.d(TAG, "onActivityResult: data is availale" + lResult.get(1));
             }
         }
     }
@@ -194,15 +194,5 @@ public class SearchLocationActivity extends AppCompatActivity {
         finish();
         return true;
     }
-
-    boolean isDataAvailable() {
-        ConnectivityManager lConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo lActiveNetworkInfo = lConnectivityManager.getActiveNetworkInfo();
-        if (lActiveNetworkInfo != null) {
-            return true;
-        }
-        return false;
-    }
-
 
 }

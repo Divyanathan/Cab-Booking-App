@@ -1,10 +1,9 @@
 package com.example.user.cabbookingapp.httphelper;
 
-import com.example.user.cabbookingapp.jdo.ContentTypeJDO;
+import com.example.user.cabbookingapp.jdo.HttpHeaderJDO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by user on 01/06/17.
@@ -15,7 +14,7 @@ public class HttpUrlHelper  implements Serializable{
     String Url;
     String HttpRequetMethod;
     String Payload;
-    ArrayList<ContentTypeJDO> ContentType;
+    ArrayList<HttpHeaderJDO> HttpHeader;
 
     public String getUrl() {
         return Url;
@@ -41,12 +40,12 @@ public class HttpUrlHelper  implements Serializable{
         Payload = payload;
     }
 
-    public ArrayList<ContentTypeJDO> getContentType() {
-        return ContentType;
+    public ArrayList<HttpHeaderJDO> getHttpHeader() {
+        return HttpHeader;
     }
 
-    public void setContentType(ArrayList<ContentTypeJDO> contentType) {
-        ContentType = contentType;
+    public void setHttpHeader(ArrayList<HttpHeaderJDO> httpHeader) {
+        HttpHeader = httpHeader;
     }
 
 }

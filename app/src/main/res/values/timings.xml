@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="route">
+        <item>"divy1"</item>
+        <item>"divy2"</item>
+        <item>"divy3"</item>
+        <item>"divy4"</item>
+        <item>"divy5"</item>
+        <item>"divy6"</item>
+        <item>"divy7"</item>
+        <item>"divy8"</item>
+        <item>"divy9"</item>
+        <item>"divy10"</item>
+        <item>"divy11"</item>
+        <item>"divy12"</item>
+    </string-array>
+</resources>

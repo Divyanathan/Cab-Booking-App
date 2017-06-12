@@ -3,6 +3,7 @@ package com.example.user.cabbookingapp.jdo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -13,13 +14,24 @@ import java.util.HashMap;
 public class UserProfilePic {
 
     @JsonProperty("image")
-    HashMap<String,String> Image;
+    HashMap<String,String> UserImage;
 
-    public HashMap<String, String> getImage() {
-        return Image;
+    @JsonProperty("emails")
+    ArrayList<HashMap<String,String>> UserEmailId;
+
+    public ArrayList<HashMap<String, String>> getUserEmailId() {
+        return UserEmailId;
     }
 
-    public void setImage(HashMap<String, String> image) {
-        Image = image;
+    public void setUserEmailId(ArrayList<HashMap<String, String>> userEmailId) {
+        UserEmailId = userEmailId;
+    }
+
+    public HashMap<String, String> getUserImage() {
+        return UserImage;
+    }
+
+    public void setUserImage(HashMap<String, String> userImage) {
+        UserImage = userImage;
     }
 }

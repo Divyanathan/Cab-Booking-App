@@ -21,8 +21,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
-            android:lineSpacingExtra="10sp"
             android:gravity="center"
+            android:lineSpacingExtra="10sp"
             android:text="Book Cab"
             android:textAlignment="center"
             android:textColor="#ffffff"
@@ -41,6 +41,7 @@
 
     <android.support.v7.widget.CardView
 
+        android:id="@+id/locationCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -71,38 +72,44 @@
                 android:layout_marginTop="52dp"
                 android:background="@drawable/circle_for_to_location" />
 
-            <TextView
-                android:id="@+id/fromTextView"
+            <LinearLayout
+                android:id="@+id/fromLocationLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="16dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="13dp"
                 android:layout_toRightOf="@id/fromCircleTextView"
-                android:fontFamily="sans-serif-light"
-                android:text="From"
-                android:textColor="@color/black"
-                android:textSize="12dp"
-                android:textStyle="normal" />
+                android:onClick="chooseFromLoction"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/fromLoctionTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_below="@+id/fromTextView"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="2dp"
-                android:layout_toRightOf="@id/fromCircleTextView"
-                android:fontFamily="sans-serif-medium"
-                android:text="Full Creative"
-                android:textColor="@color/black"
-                android:textSize="12dp"
-                android:textStyle="normal" />
+                <TextView
+                    android:id="@+id/fromTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="From"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/fromLoctionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_toRightOf="@id/fromCircleTextView"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Choose Location"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    android:textStyle="normal" />
+            </LinearLayout>
 
             <View
                 android:id="@+id/deviderTextView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/fromLoctionTextView"
+                android:layout_below="@+id/fromLocationLayout"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="11dp"
                 android:layout_toRightOf="@id/fromCircleTextView"
@@ -118,34 +125,38 @@
                 android:layout_marginTop="45dp"
                 android:src="@mipmap/double_arrow" />
 
-            <TextView
-                android:id="@+id/toTextView"
+            <LinearLayout
+                android:id="@+id/toLocationLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_below="@+id/deviderTextView"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/deviderTextView"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_toRightOf="@id/toCircleTextView"
-                android:fontFamily="sans-serif-light"
-                android:text="To"
-                android:textColor="@color/black"
-                android:textSize="12dp"
-                android:textStyle="normal" />
+                android:layout_marginTop="13dp"
+                android:layout_toRightOf="@id/fromCircleTextView"
+                android:onClick="chooseToLocation"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/toLoctionTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_below="@+id/toTextView"
-                android:layout_marginBottom="13dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="2dp"
-                android:layout_toRightOf="@id/toCircleTextView"
-                android:fontFamily="sans-serif-medium"
-                android:text="Adayar"
-                android:textColor="@color/black"
-                android:textSize="12dp"
-                android:textStyle="normal" />
+                <TextView
+                    android:id="@+id/toTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="To"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/toLoctionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Adayar"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
 
         </RelativeLayout>
 
@@ -153,46 +164,110 @@
     </android.support.v7.widget.CardView>
 
     <TextView
+        android:id="@+id/bookingTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="39dp"
         android:fontFamily="sans-serif-medium"
+        android:text="Select Timings"
         android:textColor="@color/black"
         android:textSize="12dp"
         android:textStyle="normal"
-        android:text="Select Timings"
         tools:text="Select Timings" />
 
     <GridView
-        android:layout_marginTop="17dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="15dp"
         android:id="@+id/timingsGridView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="17dp"
+        android:layout_weight="1"
         android:gravity="center"
-        android:horizontalSpacing="13dp"
-        android:numColumns="3"
-        android:verticalSpacing="16dp">
+        android:horizontalSpacing="8dp"
+        android:numColumns="4"
+        android:verticalSpacing="16dp"
+        android:visibility="visible">
 
     </GridView>
 
+    <LinearLayout
+        android:id="@+id/bookingInformationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!--<TextView-->
+        <!--android:id="@+id/successTextView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"/>-->
+
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            card_view:cardCornerRadius="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:id="@+id/bookingConfirmedTextView"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center_vertical"
+                android:textAlignment="center"
+                android:text="Booking Confirmed"
+                android:textColor="@color/black" />
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginLeft="16dp"
+            card_view:cardCornerRadius="4dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@drawable/clock"
+                android:gravity="center"
+                android:id="@+id/bookingTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:textAlignment="center"
+                android:text="   Booking Time"
+                android:textColor="@color/black" />
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+
     <Button
-        android:textAllCaps="false"
+        android:id="@+id/booking_button"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
         android:layout_marginTop="45dp"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@color/white"
-        android:onClick="bookCab"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        android:text="Book Cab"
-        android:layout_width="match_parent"
         android:background="@drawable/sected_timing"
-        android:layout_height="54dp"
-        />
+        android:fontFamily="sans-serif-medium"
+        android:onClick="bookCabButton"
+        android:text="Book Cab"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
 
 
 </LinearLayout>

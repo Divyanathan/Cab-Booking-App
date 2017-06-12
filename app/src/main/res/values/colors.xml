@@ -4,10 +4,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="light_blue">#448AFF</color>
-    <color name="light_red">#ea4335</color>
+    <color name="light_red">#d14836</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="background_theme">#efedf4</color>
     <color name="timing_color">#4990e2</color>
     <color name="timing_border_color">#4990e2</color>
+    <color name="cancel_booking_color">#d14836</color>
+
 </resources>

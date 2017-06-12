@@ -16,14 +16,15 @@ import java.net.URL;
 
 public class HttpConnection {
 
-    URL mUrl;
-    HttpURLConnection mHttpURLConnection;
-    OutputStreamWriter mOutPutStremWriter;
-    BufferedReader mBufferedReader;
-    String mResponse="";
-    private static final String TAG = "HttpConnection";
 
     public String getTheResponse(HttpUrlHelper pHttpUrlHelper) {
+
+        URL mUrl;
+        HttpURLConnection mHttpURLConnection;
+        OutputStreamWriter mOutPutStremWriter;
+        BufferedReader mBufferedReader;
+        String mResponse="";
+        final String TAG = "HttpConnection";
 
         try {
             mUrl = new URL(pHttpUrlHelper.getUrl());
@@ -32,8 +33,8 @@ public class HttpConnection {
             mHttpURLConnection.setRequestMethod(pHttpUrlHelper.getHttpRequetMethod());
             if (!pHttpUrlHelper.getHttpRequetMethod().equals("GET")) {
                 mHttpURLConnection.setDoOutput(true);
-                for (int i = 0; i < pHttpUrlHelper.getContentType().size(); i++) {
-                    mHttpURLConnection.addRequestProperty(pHttpUrlHelper.getContentType().get(i).getKey(), pHttpUrlHelper.getContentType().get(i).getValue());
+                for (int i = 0; i < pHttpUrlHelper.getHttpHeader().size(); i++) {
+                    mHttpURLConnection.addRequestProperty(pHttpUrlHelper.getHttpHeader().get(i).getKey(), pHttpUrlHelper.getHttpHeader().get(i).getValue());
                 }
                 mOutPutStremWriter = new OutputStreamWriter(mHttpURLConnection.getOutputStream());
                 mOutPutStremWriter.write(pHttpUrlHelper.getPayload());
