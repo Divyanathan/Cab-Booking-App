@@ -115,7 +115,6 @@ public class FeedBackActivity extends AppCompatActivity {
     BroadcastReceiver mFeedBackResponseReciver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             mProgressDialog.cancel();
             mFeedbackEditText.setText("");
             Toast.makeText(context, "Feedback Submitted Successfully", Toast.LENGTH_SHORT).show();

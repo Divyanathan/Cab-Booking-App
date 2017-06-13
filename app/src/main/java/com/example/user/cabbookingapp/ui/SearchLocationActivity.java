@@ -1,11 +1,8 @@
 package com.example.user.cabbookingapp.ui;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,16 +12,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.user.cabbookingapp.R;
-import com.example.user.cabbookingapp.adapter.SearchLocationAdapter;
+import com.example.user.cabbookingapp.adapter.LocationAdapter;
 import com.example.user.cabbookingapp.common.CommonClass;
 import com.example.user.cabbookingapp.datbase.CabRouteTable;
 import com.example.user.cabbookingapp.jdo.RouteJDO;
-import com.example.user.cabbookingapp.listener.RecyclerItemClickListener;
 import com.example.user.cabbookingapp.util.UtililtyClass;
 
 import java.util.ArrayList;
@@ -34,8 +32,8 @@ public class SearchLocationActivity extends AppCompatActivity {
 
     EditText mSearchEditText;
     ImageView mMicImageView, mSearchImageView;
-    RecyclerView mRecylerView;
-    SearchLocationAdapter mSearchLocationAdapter;
+    ListView mListView;
+    LocationAdapter mSearchLocationAdapter;
     CabRouteTable mRooteTable;
     ArrayList<RouteJDO> mRoutArraylist = new ArrayList<>();
     ArrayList<RouteJDO> mTempRoutArrayList = new ArrayList<>();
@@ -56,19 +54,18 @@ public class SearchLocationActivity extends AppCompatActivity {
         mSearchEditText = (EditText) findViewById(R.id.searchEditText);
         mMicImageView = (ImageView) findViewById(R.id.micImageView);
         mSearchImageView = (ImageView) findViewById(R.id.searchImageView);
-        mRecylerView = (RecyclerView) findViewById(R.id.routeRecyclerView);
+        mListView = (ListView) findViewById(R.id.routeListView);
 
         LinearLayoutManager lLayoutManager = new LinearLayoutManager(this);
         lLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecylerView.setLayoutManager(lLayoutManager);
 
         mSetLocation=getIntent().getStringExtra(UtililtyClass.CHOOSE_LOCATION);
         /**
          * set tht on item click listener for recycler view
          */
-        mRecylerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Log.d(TAG, "onItemClick: "+mTempRoutArrayList.get(position).getRoutID());
                 Intent lLoctionResultIntnet=new Intent();
@@ -81,7 +78,9 @@ public class SearchLocationActivity extends AppCompatActivity {
                 }
                 finish();
             }
-        }));
+        });
+
+
 
         /**
          * set the recycler view Adapter with Route
@@ -132,7 +131,6 @@ public class SearchLocationActivity extends AppCompatActivity {
                         Log.d(TAG, "onTextChanged: false");
                     }
                 }
-
                 mSearchLocationAdapter.notifyDataSetChanged();
             }
 
@@ -160,8 +158,8 @@ public class SearchLocationActivity extends AppCompatActivity {
 
             if (mSearchLocationAdapter == null) {
                 mTempRoutArrayList.addAll(mRoutArraylist);
-                mSearchLocationAdapter = new SearchLocationAdapter(this, mTempRoutArrayList);
-                mRecylerView.setAdapter(mSearchLocationAdapter);
+                mSearchLocationAdapter = new LocationAdapter(this, mTempRoutArrayList);
+                mListView.setAdapter(mSearchLocationAdapter);
             } else {
                 mSearchLocationAdapter.notifyDataSetChanged();
             }

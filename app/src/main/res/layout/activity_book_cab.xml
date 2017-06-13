@@ -219,8 +219,8 @@
                 android:id="@+id/bookingConfirmedTextView"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:paddingLeft="10dp"
                 android:gravity="center_vertical"
-                android:textAlignment="center"
                 android:text="Booking Confirmed"
                 android:textColor="@color/black" />
         </android.support.v7.widget.CardView>
@@ -237,14 +237,12 @@
 
             <TextView
                 android:paddingTop="5dp"
-                android:paddingLeft="5dp"
-                android:layout_gravity="center_horizontal"
+                android:paddingLeft="10dp"
                 android:drawableLeft="@drawable/clock"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:id="@+id/bookingTimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:textAlignment="center"
                 android:text="   Booking Time"
                 android:textColor="@color/black" />
         </android.support.v7.widget.CardView>

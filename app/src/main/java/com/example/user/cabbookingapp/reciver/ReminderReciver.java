@@ -32,48 +32,53 @@ public class ReminderReciver extends BroadcastReceiver {
         int lHour = lCalender.get(Calendar.HOUR_OF_DAY) * 60;
         int lMinute = lCalender.get(Calendar.MINUTE);
         int lTimeInMinute = lHour + lMinute;
-
-
+        int lReminderTime = intent.getIntExtra(UtililtyClass.USER_REMINDER_TIME, 0) + 1;
+        boolean lIsCabBooked = context.getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_CAB_BOOKED, false);
+        String lNotificationMessage = intent.getStringExtra(UtililtyClass.REMINDER_NOTIFACTION);
         Log.d(TAG, "onReceive: " + lCalender.getTime());
-        Log.d(TAG, "onReceive: current time in mins " + lTimeInMinute + " reminder time in minutes " + intent.getIntExtra(UtililtyClass.USER_REMINDER_TIME, 0));
-        Log.d(TAG, "onReceive: notify message "+intent.getStringExtra(UtililtyClass.REMINDER_NOTIFACTION));
+        Log.d(TAG, "onReceive: current time in mins " + lTimeInMinute + " reminder time in minutes " + lReminderTime);
+        Log.d(TAG, "onReceive: notify message " + lNotificationMessage);
+        Log.d(TAG, "onReceive: is cab booked " + lIsCabBooked);
         try {
             //clear the booking details
-            if (intent.getStringExtra(UtililtyClass.REMINDER_NOTIFACTION).equals(UtililtyClass.NOTIFICATION_CLEAR_BOOKING_DETAILS)) {
+            if (lNotificationMessage.equals(UtililtyClass.NOTIFICATION_CLEAR_BOOKING_DETAILS)) {
                 Log.d(TAG, "onReceive: clear the booking");
-                context.getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
-                        .edit()
-                        .putBoolean(UtililtyClass.IS_CAB_BOOKED, false)
-                        .commit();
+                //if cab booked clear the bookin information
+                if (lIsCabBooked) {
+                    context.getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
+                            .edit()
+                            .putBoolean(UtililtyClass.IS_CAB_BOOKED, false)
+                            .commit();
 
-                //send the receiver to clear the booking
+                    //send the receiver to clear the booking information
                     Intent lClearBookingIntent = new Intent(UtililtyClass.CAB_BOOKING_RECIVER);
                     lClearBookingIntent.putExtra(UtililtyClass.CAB_BOOKING_INTENT, UtililtyClass.CLEAR_BOOKING);
                     LocalBroadcastManager.getInstance(context).sendBroadcast(lClearBookingIntent);
+                }
             }
             //Notify the user to book the cab
-            else if (intent.getStringExtra(UtililtyClass.REMINDER_NOTIFACTION).equals(UtililtyClass.NOTIFICATION_TO_BOOK)){
+            else if (lNotificationMessage.equals(UtililtyClass.NOTIFICATION_TO_BOOK)) {
 
                 Log.d(TAG, "onReceive: notify the user to book the cab");
-                if (!context.getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE,Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_CAB_BOOKED,false)) {
-                   notifyUSer(context,intent.getStringExtra(UtililtyClass.REMINDER_NOTIFACTION));
+                if (!lIsCabBooked && lTimeInMinute <= lReminderTime) {
+                    notifyUSer(context, intent.getStringExtra(UtililtyClass.REMINDER_NOTIFACTION));
                 }
             }
             //Notify the user to catch the cab
-            else{
+            else {
                 Log.d(TAG, "onReceive: notify the user to catch the cab");
-                if ( context.getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE,Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_CAB_BOOKED,false)) {
-                    notifyUSer(context,intent.getStringExtra(UtililtyClass.REMINDER_NOTIFACTION));
+                if (lIsCabBooked && lTimeInMinute <= lReminderTime) {
+                    notifyUSer(context, intent.getStringExtra(UtililtyClass.REMINDER_NOTIFACTION));
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //send the notification
-    void notifyUSer(Context pContext,String pNotificationMsg){
+    void notifyUSer(Context pContext, String pNotificationMsg) {
         Notification lNotification = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
             lNotification = new Notification.Builder(pContext)

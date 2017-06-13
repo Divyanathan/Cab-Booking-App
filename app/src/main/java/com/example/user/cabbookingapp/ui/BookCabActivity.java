@@ -284,6 +284,10 @@ public class BookCabActivity extends AppCompatActivity {
                     Log.d(TAG, "onResume: set the prefred timings");
                 }else {
                     mDoNotSetPreferredTiming = false;
+                    //set cab is not available once..when user trying to book the cab when they are one minute late
+                    if(mBookingTimgs[i]==(getTime()-1)){
+                        mBookingTimeArraList.get(i).setStatus(UtililtyClass.CAB_IS_NOT_AVAILABLE);
+                    }
                 }
             } else if (mBookingTimeArraList.get(i).getBookingTime() >= getTime()) {
                 mBookingTimeArraList.get(i).setStatus(UtililtyClass.CAB_AVAILABLE);
@@ -358,7 +362,7 @@ public class BookCabActivity extends AppCompatActivity {
                     Toast.makeText(this, "Please select the Location", Toast.LENGTH_SHORT).show();
                 } else if (!lIsTimingSelected) {
                     Toast.makeText(this, "Please select the Timing", Toast.LENGTH_SHORT).show();
-                } else if (getTime() >= mBookingTimgs[mBookingSlot]) {
+                } else if (getTime() > mBookingTimgs[mBookingSlot]) {
                     //notify the user choose the other available timings
                     Toast.makeText(this, "Sorry " + mDisplayTimings[mBookingSlot] + " Cab is Not Available", Toast.LENGTH_SHORT).show();
                     mDoNotSetPreferredTiming = true;

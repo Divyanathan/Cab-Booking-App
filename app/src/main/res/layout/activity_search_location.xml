@@ -51,12 +51,13 @@
     </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/routeRecyclerView"
+    <ListView
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:id="@+id/routeListView"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp">
-
-    </android.support.v7.widget.RecyclerView>
+    </ListView>
 
 </LinearLayout>

@@ -23,7 +23,6 @@ public class HttpConnection {
         HttpURLConnection mHttpURLConnection;
         OutputStreamWriter mOutPutStremWriter;
         BufferedReader mBufferedReader;
-        String mResponse="";
         final String TAG = "HttpConnection";
 
         try {
@@ -45,12 +44,13 @@ public class HttpConnection {
             }
             mHttpURLConnection.connect();
             mBufferedReader = new BufferedReader(new InputStreamReader(mHttpURLConnection.getInputStream()));
-            String data;
-            while ((data = mBufferedReader.readLine()) != null) {
-                 mResponse=mResponse+data;
-                Log.d(TAG, "getTheResponse: "+mResponse);
+            String lResponseData;
+            StringBuilder lResponseStringBuilder=new StringBuilder();
+            while ((lResponseData = mBufferedReader.readLine()) != null) {
+                lResponseStringBuilder.append(lResponseData);
+                Log.d(TAG, "getTheResponse: "+lResponseStringBuilder.toString());
             }
-            return mResponse;
+            return lResponseStringBuilder.toString();
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
