@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +28,10 @@ import com.example.user.cabbookingapp.datbase.CabTimingTable;
 import com.example.user.cabbookingapp.httphelper.HttpUrlHelper;
 import com.example.user.cabbookingapp.service.RoutAndTimingService;
 import com.example.user.cabbookingapp.util.UtililtyClass;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static com.example.user.cabbookingapp.common.CommonClass.getTheHttpUrlHelper;
 
@@ -76,18 +84,54 @@ public class FeedBackActivity extends AppCompatActivity {
             lCabRoutTable.open();
             if (CommonClass.isDataAvailable(this)) {
                 if (!mFeedbackEditText.getText().toString().isEmpty()) {
+
+                    InputMethodManager linputMethodManager= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    linputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+
                     mProgressDialog.show();
                     SharedPreferences lSharedPrefrence=getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE,Context.MODE_PRIVATE);
-                    String lFeedBack=mFeedbackEditText.getText().toString()+"<br><br>"+
-                            "============ User Info ============"+"<br>"+
-                            "User email:"+lSharedPrefrence.getString(UtililtyClass.USER_LOGIN_ID,null)+"<br>"+
-                            "Preferred Time:"+lCabTingTable.getServiceName(lSharedPrefrence.getString(UtililtyClass.USER_PREFERED_SERVICE,null))+"<br>"+
-                            "Preferred Location:"+lCabRoutTable.getRouteName(lSharedPrefrence.getString(UtililtyClass.USRE_PREFERED_STAFF,null))+"<br>";
+//
+                    String lVersion= null;
+                    try {
+                        lVersion = getPackageManager().getPackageInfo(this.getPackageName(),0).versionName;
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
 
-                    Log.d(TAG, "Sending Feedback: feed back message "+lFeedBack);
+                    StringBuilder lFeedbackSB=new StringBuilder();
+                    lFeedbackSB.append(mFeedbackEditText.getText().toString().trim()
+                            + "<br><br>");
+                    lFeedbackSB
+                            .append("============ Device Info ============ <br>");
+                    lFeedbackSB.append("Device ID - "
+                            + "<b>"+ Settings.Secure.getString(getContentResolver(),
+                            Settings.Secure.ANDROID_ID) + "</b>"+"<br>");
+                    lFeedbackSB.append("Device - " +"<b>"+ android.os.Build.DEVICE
+                            +"</b>"+ "<br>");
+                    lFeedbackSB.append("Model - " + "<b>"+android.os.Build.MODEL
+                            +"</b>"+ "<br>");
+                    lFeedbackSB.append("Android Sdk Release - "
+                            + "<b>"+android.os.Build.VERSION.RELEASE + "</b>"+"<br>");
+                    lFeedbackSB.append("Android Sdk Version - "
+                            + "<b>"+android.os.Build.VERSION.SDK_INT +"</b>"+ "<br><br>");
+                    lFeedbackSB
+                            .append("============ Application Info ============ <br>");
+                    lFeedbackSB.append("Application version - "
+                            +"<b>"+ lVersion +"</b>"+ "<br>");
+                    lFeedbackSB.append("User Name - "
+                            + "<b>"+lSharedPrefrence.getString(UtililtyClass.USER_LOGIN_ID,null) +"</b>"+ "<br>");
+                    lFeedbackSB.append("User Booked Time - "
+                            +"<b>"+lCabTingTable.getServiceName(lSharedPrefrence.getString(UtililtyClass.USER_PREFERED_SERVICE,null)) + "</b>"+"<br>");
+                    lFeedbackSB.append("User Booked Location - "
+                            + "<b>"+lCabRoutTable.getRouteName(lSharedPrefrence.getString(UtililtyClass.USRE_PREFERED_STAFF,null)) +"</b>"+ "<br>");
+                    lFeedbackSB.append("Date and Timezone - "
+                            + "<b>"+new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy",
+                            Locale.ENGLISH).format(new Date())+"</b>");
+
+                    Log.d(TAG, "Sending Feedback: feed back message "+lFeedbackSB);
                     String lRequestHeader = "loopKey=" + "agtzfmxvb3BhYmFja3IRCxIETG9vcBiAgICy0YqbCww" + "&"
                             + "user_email=" + lSharedPrefrence.getString(UtililtyClass.USER_LOGIN_ID, null) + "&"
-                            + "card_desc=" + lFeedBack + "&"
+                            + "card_desc=" + lFeedbackSB + "&"
                             + "tag=" + "feedBack" + "&"
                             + "user_name=" + lSharedPrefrence.getString(UtililtyClass.USER_NAME, null) + "&"
                             + "card_title=" + "Android Cab App Feedback" + "&";
