@@ -7,12 +7,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -23,7 +25,7 @@ import com.example.user.cabbookingapp.R;
 import com.example.user.cabbookingapp.common.CommonClass;
 import com.example.user.cabbookingapp.datbase.CabRouteTable;
 import com.example.user.cabbookingapp.datbase.CabTimingTable;
-import com.example.user.cabbookingapp.reciver.ReminderReciver;
+import com.example.user.cabbookingapp.receiver.ReminderReciver;
 import com.example.user.cabbookingapp.util.UtililtyClass;
 import com.squareup.picasso.Picasso;
 
@@ -68,28 +70,25 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 if (mReminderSwitch.isChecked()) {
                     mReminderSwitch.setChecked(false);
-                    final String[] lRiminderTiming = new String[]{"5 Mins Before", "15 Mins Before", "30 Mins Before", "1 Hour Before"};
-                    new AlertDialog.Builder(UserProfileActivity.this, R.style.MyDialogTheme)
-                            .setTitle("Set the Reminder timing")
-                            .setSingleChoiceItems(lRiminderTiming, -1, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int pPosition) {
-                                    mIsReminderOn = true;
-                                    mReminderTime = lRiminderTiming[pPosition];
-                                    Log.d(TAG, "onClick: custom dialog" + lRiminderTiming[pPosition]);
-                                }
-                            })
-                            .setPositiveButton("Set", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (mIsReminderOn) {
-                                        mReminderSwitch.setChecked(true);
-                                        getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
-                                                .edit()
-                                                .putBoolean(UtililtyClass.IS_REMINDER_ON, true)
-                                                .commit();
-                                        String lTimingId = getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getString(UtililtyClass.USER_PREFERED_SERVICE, null);
-                                        if (lTimingId != null) {
+                    final String lTimingId = getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getString(UtililtyClass.USER_PREFERED_SERVICE, null);
+                    if (lTimingId != null && !lTimingId.isEmpty()) {
+                        final String[] lRiminderTiming = new String[]{"5 Mins Before", "15 Mins Before", "30 Mins Before", "1 Hour Before"};
+
+                        new AlertDialog.Builder(UserProfileActivity.this, R.style.MyDialogTheme)
+                                .setTitle("Set the Reminder timing")
+                                .setSingleChoiceItems(lRiminderTiming, -1, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int pPosition) {
+                                        mIsReminderOn = true;
+                                        mReminderTime = lRiminderTiming[pPosition];
+                                        Log.d(TAG, "onClick: custom dialog" + lRiminderTiming[pPosition]);
+                                    }
+                                })
+                                .setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (mIsReminderOn) {
+                                            mReminderSwitch.setChecked(true);
 
                                             //get the reminder timing
                                             String[] lReminderTimeInStr = mReminderTime.split("\\s");
@@ -97,49 +96,38 @@ public class UserProfileActivity extends AppCompatActivity {
                                             if (lReminderTimeInInteger == 1) {
                                                 lReminderTimeInInteger = 60;
                                             }
-                                            getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE,Context.MODE_PRIVATE)
+
+                                            int lBookingTime = mTimingTable.getTheBookingTime(lTimingId);
+                                            getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
                                                     .edit()
-                                                    .putInt(UtililtyClass.USER_REMINDER_TIME,lReminderTimeInInteger)
+                                                    .putBoolean(UtililtyClass.IS_REMINDER_ON, true)
+                                                    .putInt(UtililtyClass.USER_REMINDER_TIME,lBookingTime)
+                                                    .putInt(UtililtyClass.NOTYFYING_TIME,lReminderTimeInInteger)
                                                     .commit();
-
-                                            Log.d(TAG, "onClick: "+getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE,Context.MODE_PRIVATE).getInt(UtililtyClass.USER_REMINDER_TIME,0));
-                                            int lBookingTime = mTimingTable.getTheBookinTime(lTimingId);
-
                                             //set the reminder to book the cab
-                                            Intent lNotifyBookIntent=new Intent(UserProfileActivity.this,ReminderReciver.class);
-                                            lNotifyBookIntent.putExtra(UtililtyClass.REMINDER_NOTIFACTION,UtililtyClass.NOTIFICATION_TO_BOOK);
-                                            lNotifyBookIntent.putExtra(UtililtyClass.USER_REMINDER_TIME,lBookingTime - lReminderTimeInInteger);
-                                            CommonClass.setReminder(UserProfileActivity.this,lBookingTime - lReminderTimeInInteger, UtililtyClass.NOTIFY_TO_BOOK_CODE,lNotifyBookIntent);
+                                            Intent lNotifyBookIntent = new Intent(UserProfileActivity.this, ReminderReciver.class);
+                                            lNotifyBookIntent.putExtra(UtililtyClass.REMINDER_NOTIFACTION, UtililtyClass.NOTIFICATION_TO_BOOK);
+                                            lNotifyBookIntent.putExtra(UtililtyClass.USER_REMINDER_TIME, lBookingTime - lReminderTimeInInteger);
+                                            CommonClass.setReminder(UserProfileActivity.this, lBookingTime - lReminderTimeInInteger, lNotifyBookIntent);
 
-                                            //set the reminder to notify the user 5 mins before the cab starts
-                                            Intent lNotifyToLeave=new Intent(UserProfileActivity.this,ReminderReciver.class);
-                                            lNotifyToLeave.putExtra(UtililtyClass.REMINDER_NOTIFACTION,UtililtyClass.NOTIFICATION_TO_GO_TO_CAB);
-                                            //115 represents 115 minutes which will be added to the cutoff time to remind the user to  leave the office so that they can catch the cab
-                                            lNotifyToLeave.putExtra(UtililtyClass.USER_REMINDER_TIME,lBookingTime+115);
-                                            CommonClass.setReminder(UserProfileActivity.this,lBookingTime + 115, UtililtyClass.NOTIFY_TO_LEAVE_CODE,lNotifyToLeave);
 
-                                            //set the reminder to clear the booking info once it's done
-                                            Intent lClearBookingIntent=new Intent(UserProfileActivity.this,ReminderReciver.class);
-                                            lClearBookingIntent.putExtra(UtililtyClass.REMINDER_NOTIFACTION,UtililtyClass.NOTIFICATION_CLEAR_BOOKING_DETAILS);
-                                            lClearBookingIntent.putExtra(UtililtyClass.USER_REMINDER_TIME,lBookingTime+120);
-                                            CommonClass.setReminder(UserProfileActivity.this,lBookingTime + 120, UtililtyClass.CLEAR_BOOKING_CODE,lClearBookingIntent);
+                                            Log.d(TAG, "Set the Alarm Manager  booking time " + lBookingTime + " time " + (lBookingTime - lReminderTimeInInteger) + " hour " + mCalender.get(Calendar.HOUR_OF_DAY) + " minutes " + mCalender.get(Calendar.MINUTE));
 
-                                            Log.d(TAG, "Set the Alarm Manager " + lBookingTime + " time in ms " + (lBookingTime - lReminderTimeInInteger) + " " + mCalender.get(Calendar.HOUR_OF_DAY) + " " + mCalender.get(Calendar.MINUTE));
-                                        } else {
-                                            Toast.makeText(UserProfileActivity.this, "Please book the cab before setting reminder", Toast.LENGTH_SHORT).show();
                                         }
+                                        Log.d(TAG, "onClick: reminder time is setted " + mReminderTime);
                                     }
-                                    Log.d(TAG, "onClick: reminder time is setted " + mReminderTime);
-                                }
-                            })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                }
-                            })
-                            .create()
-                            .show();
+                                    }
+                                })
+                                .create()
+                                .show();
+                    } else {
+                        Toast.makeText(UserProfileActivity.this, "Please book the cab before setting reminder", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
 
                     //cancel the reminders
@@ -192,7 +180,6 @@ public class UserProfileActivity extends AppCompatActivity {
                         .create()
                         .show();
 
-
             }
         });
 
@@ -218,8 +205,9 @@ public class UserProfileActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + lImageUrl);
         Picasso.with(this)
                 .load(lImageUrl)
+                .placeholder(R.drawable.user)
                 .resize(600, 600)
-                .into((ImageView) findViewById(R.id.userProfilrImage));
+                .into((ImageView) findViewById(R.id.profile_image));
 
         //set the email address
         ((TextView) findViewById(R.id.emailTextView)).setText(lSharedPrefrence.getString(UtililtyClass.USER_LOGIN_ID, "no_id"));
@@ -227,20 +215,57 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     //navigate to feedback activity
-    public void feedBackButton(View pView){
-        Intent lIntent=new Intent(UserProfileActivity.this,FeedBackActivity.class);
+    public void feedBackButton(View pView) {
+        Intent lIntent = new Intent(UserProfileActivity.this, FeedBackActivity.class);
         startActivity(lIntent);
+        overridePendingTransition(R.anim.enter_from_right,R.anim.exit_to_left);
     }
+
     //cancel the reminder
-    void cancelReminder(int pPendingIntentRequestCode){
-        mAlarmManagerPendingIntent = PendingIntent.getBroadcast(UserProfileActivity.this, pPendingIntentRequestCode, new Intent(UserProfileActivity.this,ReminderReciver.class), PendingIntent.FLAG_CANCEL_CURRENT);
+    void cancelReminder(int pPendingIntentRequestCode) {
+        mAlarmManagerPendingIntent = PendingIntent.getBroadcast(UserProfileActivity.this, pPendingIntentRequestCode, new Intent(UserProfileActivity.this, ReminderReciver.class), PendingIntent.FLAG_CANCEL_CURRENT);
         mAlarmManager.cancel(mAlarmManagerPendingIntent);
 
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        finish();
+//        finish();
+        Log.d(TAG, "onSupportNavigateUp: ");
+//        finish();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            supportFinishAfterTransition();
+            finishAfterTransition();
+        }else{
+            finish();
+        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
+        }
         return true;
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            supportFinishAfterTransition();
+//            finishAfterTransition();
+//        }
+////        supportFinishAfterTransition();
+////        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
+//    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                supportFinishAfterTransition();
+                finishAfterTransition();
+                return true;
+            }else{
+                finish();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

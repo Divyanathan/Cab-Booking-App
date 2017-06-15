@@ -20,6 +20,12 @@ public class BookingTimeJDO implements Serializable {
         this.status = status;
     }
 
+    public BookingTimeJDO(String timingID, String displayTime, int bookingTime) {
+        TimingID = timingID;
+        DisplayTime = displayTime;
+        BookingTime = bookingTime;
+    }
+
     public String getTimingID() {
         return TimingID;
     }

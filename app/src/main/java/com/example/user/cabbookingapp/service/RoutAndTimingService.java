@@ -78,8 +78,6 @@ public class RoutAndTimingService extends IntentService {
                     Log.d(TAG, "onHandleIntent: Rout APi " + mUserDetailJDoArrayList.get(1).getName());
 
                 }
-
-                //get the timing
                 else if (pIntent.getStringExtra(UtililtyClass.GET_API_INTENT).equals(UtililtyClass.TIMING_API)) {
 
                     mTimingJDOArrayList = mObjectMapper.readValue(mResponse, new TypeReference<List<TimingsJDO>>() {
@@ -91,10 +89,7 @@ public class RoutAndTimingService extends IntentService {
                     mCabTimingTable.addTimings(mTimingJDOArrayList);
                     Log.d(TAG, "onHandleIntent: Timing Api " + mTimingJDOArrayList.get(1).getColorcode());
 
-                }
-
-                //get the Contact
-                else if (getApi.equals(UtililtyClass.CONTACT_API)) {
+                } else if (getApi.equals(UtililtyClass.CONTACT_API)) {
 
                     Log.d(TAG, "onHandleIntent: contact response " + mResponse);
                     storeContactDetails(mResponse);
@@ -129,20 +124,25 @@ public class RoutAndTimingService extends IntentService {
 
                     ObjectMapper lObjectMapper = new ObjectMapper();
                     GetTodayBookingJDO lGetBookingJDO = lObjectMapper.readValue(mResponse, GetTodayBookingJDO.class);
-                    lGetBookingJDO.getBookingData().size();
                     Intent lGetTodayBookingIntent = new Intent(UtililtyClass.CAB_BOOKING_RECIVER);
                     lGetTodayBookingIntent.putExtra(UtililtyClass.CAB_BOOKING_INTENT, UtililtyClass.GET_TODAY_BOOKING);
                     //if the size of data is grater than one means cab booked today
-                    if (lGetBookingJDO.getBookingData().size() > 0)
+                    if (lGetBookingJDO.getBookingData().size() > 0) {
                         lGetTodayBookingIntent.putExtra(UtililtyClass.IS_CAB_BOOKED_TODAY, true);
-                    else
+                        getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE,Context.MODE_PRIVATE)
+                                .edit()
+                                .putString(UtililtyClass.USRE_PREFERED_STAFF,lGetBookingJDO.getBookingData().get(0).get("")).commit();
+                    } else {
+
                         lGetTodayBookingIntent.putExtra(UtililtyClass.IS_CAB_BOOKED_TODAY, false);
+                    }
                     LocalBroadcastManager.getInstance(this).sendBroadcast(lGetTodayBookingIntent);
                     Log.d(TAG, "onHandleIntent: size of the data " + lGetBookingJDO.getBookingData().size());
 
-                }
-                else if (getApi.equals(UtililtyClass.FEED_BACK_API)){
-                    Log.d(TAG, "onHandleIntent: feedback Response "+mResponse);
+                } else if (getApi.equals(UtililtyClass.GET_TODAY_BOOKING_API_FROM_RESUME)) {
+
+                } else if (getApi.equals(UtililtyClass.FEED_BACK_API)) {
+                    Log.d(TAG, "onHandleIntent: feedback Response " + mResponse);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(UtililtyClass.FEED_BACK_RECIVER));
                 }
             }

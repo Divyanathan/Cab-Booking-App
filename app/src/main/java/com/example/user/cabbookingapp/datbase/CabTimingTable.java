@@ -99,11 +99,17 @@ public class CabTimingTable {
         return mSqliteDataBase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + "'" + pTimingID + "'", null);
     }
 
-    public int getTheBookinTime(String pRouteID){
+    public Cursor getCabTimingDetails(){
+
+        return mSqliteDataBase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+    }
+
+    public int getTheBookingTime(String pRouteID){
 
         Cursor lContactCursor = mSqliteDataBase.rawQuery("SELECT "+COLUMN_START_DATE_LONG+" FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + "'" + pRouteID + "'", null);
-        lContactCursor.moveToFirst();
+        if (lContactCursor.moveToFirst())
         return lContactCursor.getInt(0);
+        return 0;
     }
     public boolean isDataExsit(String pTimingId) {
         Log.d(TAG, "isDataExsit: ");

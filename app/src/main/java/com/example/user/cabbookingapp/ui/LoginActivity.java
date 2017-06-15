@@ -54,11 +54,10 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
         Log.d(TAG, "onCreate: " + getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_USER_LOGED_IN, false));
         if (getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_USER_LOGED_IN, false)) {
 
-
             Intent lBookCabIntent = new Intent(LoginActivity.this, BookCabActivity.class);
             startActivity(lBookCabIntent);
             finish();
-            Log.d(TAG, "onCreate: User loged in already");
+            Log.d(TAG, "onCreate: User logged in already");
 
         }
 
@@ -114,9 +113,8 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            lProgressDialog.setMessage("Retrive data");
+            lProgressDialog.setMessage("Syncronizing");
             lProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setMessage("Retrive data");
         }
 
         @Override
@@ -178,6 +176,7 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
                 Intent lBookCabIntent = new Intent(LoginActivity.this, BookCabActivity.class);
                 startActivity(lBookCabIntent);
                 finish();
+                overridePendingTransition(R.anim.enter_from_right,R.anim.exit_to_bottom);
             }
         }
     };

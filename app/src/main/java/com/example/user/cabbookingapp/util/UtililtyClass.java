@@ -62,6 +62,7 @@ public class UtililtyClass {
     public static final String CANCEL_BOOKING_API = "cancel_the_booking";
     public static final String PROFILE_API = "get_user_profile_pic";
     public static final String GET_TODAY_BOOKING_API = "get_today_booking";
+    public static final String GET_TODAY_BOOKING_API_FROM_RESUME = "get_today_booking_from_resume";
     public static final String FEED_BACK_API = "feed_back_api";
     /**
      * Booking Cab
@@ -116,11 +117,13 @@ public class UtililtyClass {
     public static final int NOTIFY_TO_BOOK_CODE = 12;
     public static final int NOTIFY_TO_LEAVE_CODE = 13;
     public static final int CLEAR_BOOKING_CODE = 14;
+    public static final int NOTIFICATION_ID = 3;
     public static final String IS_REMINDER_ON = "is_reminder_on";
     public static final String REMINDER_NOTIFACTION="reminder_notification";
     public static final String NOTIFICATION_TO_BOOK ="Time to book the cab";
     public static final String NOTIFICATION_TO_GO_TO_CAB="Cab is waiting for you";
     public static final String NOTIFICATION_CLEAR_BOOKING_DETAILS="clear_booking_details";
+    public static final String NOTYFYING_TIME="notifying_time";
 
     /**
      * http header

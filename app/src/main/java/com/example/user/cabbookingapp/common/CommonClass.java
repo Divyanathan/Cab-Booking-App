@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.util.Log;
 
 import com.example.user.cabbookingapp.httphelper.HttpUrlHelper;
 import com.example.user.cabbookingapp.jdo.HttpHeaderJDO;
 import com.example.user.cabbookingapp.ui.UserProfileActivity;
+import com.example.user.cabbookingapp.util.UtililtyClass;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,14 +54,17 @@ public class CommonClass {
     }
 
     //set the remid
-    public static void setReminder(Context pContext, int pTime, int pPendingIntentRequestCode, Intent pIntent) {
-
-        PendingIntent mAlarmManagerPendingIntent = PendingIntent.getBroadcast(pContext, pPendingIntentRequestCode, pIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+    public static void setReminder(Context pContext, int pTime,Intent pIntent) {
+        PendingIntent mAlarmManagerPendingIntent = PendingIntent.getBroadcast(pContext,UtililtyClass.NOTIFY_TO_BOOK_CODE , pIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar mCalender = CommonClass.getTheTimeFromCallender(pTime);
         AlarmManager lAlarmManager = (AlarmManager) pContext.getSystemService(Context.ALARM_SERVICE);
-        lAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(), AlarmManager.INTERVAL_DAY, mAlarmManagerPendingIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            lAlarmManager.setExact(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(), mAlarmManagerPendingIntent);
+        }else {
+            lAlarmManager.set(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(), mAlarmManagerPendingIntent);
+        }
 
-        Log.d(TAG, "setReminder: ");
+        Log.d("CommonClass", "setReminder : "+mCalender.getTimeInMillis());
     }
 
     public static boolean isDataAvailable(Context pContext) {

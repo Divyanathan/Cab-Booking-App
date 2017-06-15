@@ -77,6 +77,7 @@ public class SearchLocationActivity extends AppCompatActivity {
                     setResult(SEARCH_TO_LOCATION_CODE,lLoctionResultIntnet);
                 }
                 finish();
+                overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
             }
         });
 
@@ -190,7 +191,13 @@ public class SearchLocationActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         finish();
+        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
+    }
 }
