@@ -172,7 +172,11 @@ public class UserProfileActivity extends AppCompatActivity {
                                 lCabRouteTable.open();
                                 lCabRouteTable.deleteRouteTable();
                                 lCabTimingTable.close();
-                                finish();
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    finishAffinity();
+                                    Intent lIntent=new Intent(UserProfileActivity.this,LoginActivity.class);
+                                    startActivity(lIntent);
+                                }
                                 setResult(USER_PROFILE_PAGE_REQUEST_CODE);
                                 Log.d(TAG, "Sign out button click : " + getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getString(UtililtyClass.USER_NAME, null));
                             }
@@ -230,41 +234,35 @@ public class UserProfileActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-//        finish();
         Log.d(TAG, "onSupportNavigateUp: ");
-//        finish();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            supportFinishAfterTransition();
-            finishAfterTransition();
-        }else{
-            finish();
+        finish();
         overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
-        }
-        return true;
-    }
-
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
+//        finish();
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            supportFinishAfterTransition();
 //            finishAfterTransition();
+//        }else{
+//            finish();
+//        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
 //        }
-////        supportFinishAfterTransition();
-////        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
-//    }
+        return true;
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                supportFinishAfterTransition();
-                finishAfterTransition();
-                return true;
-            }else{
-                finish();
-                return true;
-            }
+
+            finish();
+            overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
+            return true;
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                supportFinishAfterTransition();
+//                finishAfterTransition();
+//                return true;
+//            }else{
+//                finish();
+//                return true;
+//            }
         }
         return super.onKeyDown(keyCode, event);
     }

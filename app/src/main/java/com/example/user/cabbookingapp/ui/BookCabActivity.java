@@ -1,5 +1,6 @@
 package com.example.user.cabbookingapp.ui;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -131,6 +132,8 @@ public class BookCabActivity extends AppCompatActivity {
                     mGridViewAdapter.notifyDataSetChanged();
                 }
                 Log.d(TAG, "onItemClick:  always");
+
+                setCabBookButton();
             }
         });
 
@@ -152,15 +155,18 @@ public class BookCabActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent lProfilePageIntent = new Intent(BookCabActivity.this, UserProfileActivity.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    ActivityOptionsCompat lActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(BookCabActivity.this, (View) findViewById(R.id.profile_image), "profile");
-                    startActivityForResult(lProfilePageIntent, USER_PROFILE_PAGE_REQUEST_CODE, lActivityOptionsCompat.toBundle());
-                    Log.d(TAG, "onClick: navigating to the user profile activity using shared element");
-                } else {
-                    startActivityForResult(lProfilePageIntent, USER_PROFILE_PAGE_REQUEST_CODE);
+                startActivityForResult(lProfilePageIntent, USER_PROFILE_PAGE_REQUEST_CODE);
+                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    ActivityOptionsCompat lActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(BookCabActivity.this, (View) findViewById(R.id.profile_image), "profile");
+//                    startActivityForResult(lProfilePageIntent, USER_PROFILE_PAGE_REQUEST_CODE, lActivityOptionsCompat.toBundle());
+//                    Log.d(TAG, "onClick: navigating to the user profile activity using shared element");
+//                } else {
+//                    startActivityForResult(lProfilePageIntent, USER_PROFILE_PAGE_REQUEST_CODE);
 //                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-                    Log.d(TAG, "onClick: navigating to user profile ");
-                }
+//                    Log.d(TAG, "onClick: navigating to user profile ");
+//                }
             }
         });
 
@@ -173,7 +179,7 @@ public class BookCabActivity extends AppCompatActivity {
                 .into((ImageView) findViewById(R.id.profile_image));
 
         //cancel the notification
-        NotificationManager lNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager lNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         lNotificationManager.cancel(UtililtyClass.NOTIFICATION_ID);
 
         //register the broadcast reciever
@@ -235,6 +241,7 @@ public class BookCabActivity extends AppCompatActivity {
                     });
                     Log.d(TAG, "onResume: setting preferred route");
                 }
+                setCabBookButton();
             }
             Log.d(TAG, "onResume: preferred rout is available");
 
@@ -251,6 +258,7 @@ public class BookCabActivity extends AppCompatActivity {
                     Log.d(TAG, "resume : setting the time and location");
                     getTimingDetailsFromDB();
                     setGridViewAdapter();
+                    setCabBookButton();
                 }
             });
             Log.d(TAG, "onResume: showing the time ");
@@ -354,6 +362,7 @@ public class BookCabActivity extends AppCompatActivity {
                         .commit();
                 Log.d(TAG, "onPostExecute: getting today's booking.. cab is not booked");
             }
+            setCabBookButton();
         }
     }
 
@@ -469,11 +478,11 @@ public class BookCabActivity extends AppCompatActivity {
                 getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
                         .edit()
                         .putString(UtililtyClass.USER_PREFERED_SERVICE, mRouteTimingID)
-                        .putInt(UtililtyClass.USER_REMINDER_TIME,lBookingTime)
+                        .putInt(UtililtyClass.USER_REMINDER_TIME, lBookingTime)
                         .putBoolean(UtililtyClass.IS_CAB_BOOKED, true)
                         .commit();
 
-                Log.d(TAG, "onPostExecute: cut off time "+lBookingTime);
+                Log.d(TAG, "onPostExecute: cut off time " + lBookingTime);
                 if (getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_REMINDER_ON, false)) {
 
                     //set the reminder to book the cab
@@ -706,6 +715,7 @@ public class BookCabActivity extends AppCompatActivity {
                 mToLoactionTextView.setText(UtililtyClass.COMPANY_LOCATION);
                 setTheLocationIsSelected();
                 mIsLocationSelectedByUser = true;
+                setCabBookButton();
             }
         } else if (requestCode == SEARCH_TO_LOCATION_CODE) {
 
@@ -720,6 +730,7 @@ public class BookCabActivity extends AppCompatActivity {
                 mFromLocationTextView.setText(UtililtyClass.COMPANY_LOCATION);
                 setTheLocationIsSelected();
                 mIsLocationSelectedByUser = true;
+                setCabBookButton();
             }
         }
 //        } else if (requestCode == USER_PROFILE_PAGE_REQUEST_CODE) {
@@ -861,6 +872,20 @@ public class BookCabActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mCabBookingReciever);
         super.onDestroy();
         Log.d(TAG, "onDestroy: ");
+    }
+
+    void setCabBookButton() {
+        SharedPreferences lSharedPrefrence = getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE);
+        boolean lIsCabBooked = lSharedPrefrence.getBoolean(UtililtyClass.IS_CAB_BOOKED, false);
+        if (!lIsCabBooked) {
+            boolean lIsLocaionSelected = lSharedPrefrence.getBoolean(UtililtyClass.IS_LOCATION_SELECTED, false);
+            boolean lISTimeSelected = lSharedPrefrence.getBoolean(UtililtyClass.IS_TIME_SELCTED, false);
+            if (lIsLocaionSelected && lISTimeSelected) {
+                changeColorOfCabBookingButton("Book Cab", R.drawable.sected_timing);
+            } else {
+                changeColorOfCabBookingButton("Book Cab", R.drawable.disable_booking_button);
+            }
+        }
     }
 
 
