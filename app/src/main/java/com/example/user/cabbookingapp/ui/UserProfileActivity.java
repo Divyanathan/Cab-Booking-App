@@ -101,8 +101,8 @@ public class UserProfileActivity extends AppCompatActivity {
                                             getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
                                                     .edit()
                                                     .putBoolean(UtililtyClass.IS_REMINDER_ON, true)
-                                                    .putInt(UtililtyClass.USER_REMINDER_TIME,lBookingTime)
-                                                    .putInt(UtililtyClass.NOTYFYING_TIME,lReminderTimeInInteger)
+                                                    .putInt(UtililtyClass.USER_REMINDER_TIME, lBookingTime)
+                                                    .putInt(UtililtyClass.NOTYFYING_TIME, lReminderTimeInInteger)
                                                     .commit();
                                             //set the reminder to book the cab
                                             Intent lNotifyBookIntent = new Intent(UserProfileActivity.this, ReminderReciver.class);
@@ -173,11 +173,15 @@ public class UserProfileActivity extends AppCompatActivity {
                                 lCabRouteTable.deleteRouteTable();
                                 lCabTimingTable.close();
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
                                     finishAffinity();
-                                    Intent lIntent=new Intent(UserProfileActivity.this,LoginActivity.class);
+                                    Intent lIntent = new Intent(UserProfileActivity.this, LoginActivity.class);
                                     startActivity(lIntent);
                                 }
-                                setResult(USER_PROFILE_PAGE_REQUEST_CODE);
+//                                Intent lIntent = new Intent(UserProfileActivity.this, LoginActivity.class);
+//                                lIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                startActivity(lIntent);
+//                                finish();
                                 Log.d(TAG, "Sign out button click : " + getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getString(UtililtyClass.USER_NAME, null));
                             }
                         })
@@ -209,7 +213,6 @@ public class UserProfileActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + lImageUrl);
         Picasso.with(this)
                 .load(lImageUrl)
-                .placeholder(R.drawable.user)
                 .resize(600, 600)
                 .into((ImageView) findViewById(R.id.profile_image));
 
@@ -222,7 +225,7 @@ public class UserProfileActivity extends AppCompatActivity {
     public void feedBackButton(View pView) {
         Intent lIntent = new Intent(UserProfileActivity.this, FeedBackActivity.class);
         startActivity(lIntent);
-        overridePendingTransition(R.anim.enter_from_right,R.anim.exit_to_left);
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
     }
 
     //cancel the reminder
@@ -236,7 +239,7 @@ public class UserProfileActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         Log.d(TAG, "onSupportNavigateUp: ");
         finish();
-        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
 //        finish();
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            supportFinishAfterTransition();
@@ -250,10 +253,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
 
             finish();
-            overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
+            overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
             return true;
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                supportFinishAfterTransition();

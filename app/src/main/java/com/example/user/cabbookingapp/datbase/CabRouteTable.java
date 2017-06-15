@@ -53,6 +53,7 @@ public class CabRouteTable {
 
     }
 
+    //get insert the route details
     public void addRoutDetails(ArrayList<CustomerJDO> pCustomerJDOArrayList) {
         mSqliteDataBase.beginTransaction();
         try {
@@ -79,6 +80,7 @@ public class CabRouteTable {
 
     }
 
+    //get route
     public Cursor getRoute() {
 
         Cursor lContactCursor = mSqliteDataBase.rawQuery("SELECT " + COLUMN_ROUTE_NAME + "," + COLUMN_ID + " FROM " + TABLE_NAME, null);
@@ -86,6 +88,7 @@ public class CabRouteTable {
 
     }
 
+    // get route name
     public String getRouteName(String pRouteID) {
         Cursor lContactCursor = mSqliteDataBase.rawQuery("SELECT " + COLUMN_ROUTE_NAME + " FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + "'" + pRouteID + "'", null);
         if (lContactCursor.moveToFirst())
@@ -94,6 +97,7 @@ public class CabRouteTable {
             return null;
     }
 
+    //before inserting the data check whether is already exist or not
     public boolean isDataExsit(String pRoutID) {
 
         Cursor lContactCursor = mSqliteDataBase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + "=" + "'" + pRoutID + "'", null);
@@ -105,6 +109,7 @@ public class CabRouteTable {
         return false;
     }
 
+    //delete the table once the user logged out
     public void deleteRouteTable() {
         mSqliteDataBase.delete(TABLE_NAME, null, null);
 //        Cursor lDeltetCursor=mSqliteDataBase.rawQuery("DELETE TABLE " + TABLE_NAME ,null);
@@ -113,6 +118,7 @@ public class CabRouteTable {
 //        }
     }
 
+    //close the database
     public void close() {
 
         mDataBseHelper.close();

@@ -165,6 +165,8 @@ public class ReminderReciver extends BroadcastReceiver {
             return false;
         }
 
+        //set the calender to set the alarm tmr
+        //if today is friday set the alarm on monday
         Calendar setCalender(int pIntervalDay) {
             SharedPreferences lSharedPrefrence= mContext.getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE);
             lSharedPrefrence.getInt(UtililtyClass.USER_REMINDER_TIME, 0);
@@ -186,12 +188,14 @@ public class ReminderReciver extends BroadcastReceiver {
     void notifyUSer(Context pContext, String pNotificationMsg) {
         final int PENDING_INTENT_ID = 5;
         Notification lNotification = null;
+        Intent lIntent = new Intent(pContext, BookCabActivity.class);
+        lIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
             lNotification = new Notification.Builder(pContext)
                     .setContentTitle("Cab Booking notification")
                     .setContentText(pNotificationMsg)
                     .setSmallIcon(R.mipmap.car_logo)
-                    .setContentIntent(PendingIntent.getActivity(pContext, PENDING_INTENT_ID, new Intent(pContext, BookCabActivity.class), PendingIntent.FLAG_ONE_SHOT))
+                    .setContentIntent(PendingIntent.getActivity(pContext, PENDING_INTENT_ID,lIntent, PendingIntent.FLAG_ONE_SHOT))
                     .build();
         }
         NotificationManager lNotificationManager = (NotificationManager) pContext.getSystemService(Context.NOTIFICATION_SERVICE);

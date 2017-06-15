@@ -17,6 +17,7 @@ import java.net.URL;
 public class HttpConnection {
 
 
+    //hit the api and return to the response
     public String getTheResponse(HttpUrlHelper pHttpUrlHelper) {
 
         URL mUrl;

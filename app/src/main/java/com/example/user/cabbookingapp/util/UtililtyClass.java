@@ -121,6 +121,7 @@ public class UtililtyClass {
     public static final String IS_REMINDER_ON = "is_reminder_on";
     public static final String REMINDER_NOTIFACTION="reminder_notification";
     public static final String NOTIFICATION_TO_BOOK ="Time to book the cab";
+    public static final String IS_NOTIFICATION_SENT ="is_notification_sent";
     public static final String NOTIFICATION_TO_GO_TO_CAB="Cab is waiting for you";
     public static final String NOTIFICATION_CLEAR_BOOKING_DETAILS="clear_booking_details";
     public static final String NOTYFYING_TIME="notifying_time";

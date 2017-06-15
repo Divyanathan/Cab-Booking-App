@@ -67,6 +67,7 @@ public class CommonClass {
         Log.d("CommonClass", "setReminder : "+mCalender.getTimeInMillis());
     }
 
+    //check is the internet is available or not
     public static boolean isDataAvailable(Context pContext) {
         ConnectivityManager lConnectivityManager = (ConnectivityManager) pContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo lActiveNetworkInfo = lConnectivityManager.getActiveNetworkInfo();
