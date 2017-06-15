@@ -74,12 +74,13 @@ public class UserProfileActivity extends AppCompatActivity {
                     if (lTimingId != null && !lTimingId.isEmpty()) {
                         final String[] lRiminderTiming = new String[]{"5 Mins Before", "15 Mins Before", "30 Mins Before", "1 Hour Before"};
 
-                        new AlertDialog.Builder(UserProfileActivity.this, R.style.MyDialogTheme)
+                        AlertDialog lAlertDialog = new AlertDialog.Builder(UserProfileActivity.this, R.style.MyDialogTheme)
                                 .setTitle("Set the Reminder timing")
                                 .setSingleChoiceItems(lRiminderTiming, -1, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int pPosition) {
                                         mIsReminderOn = true;
+                                        ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
                                         mReminderTime = lRiminderTiming[pPosition];
                                         Log.d(TAG, "onClick: custom dialog" + lRiminderTiming[pPosition]);
                                     }
@@ -87,6 +88,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                 .setPositiveButton("Set", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+
                                         if (mIsReminderOn) {
                                             mReminderSwitch.setChecked(true);
 
@@ -123,8 +125,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
                                     }
                                 })
-                                .create()
-                                .show();
+                                .create();
+                        lAlertDialog.show();
+                        lAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                     } else {
                         Toast.makeText(UserProfileActivity.this, "Please book the cab before setting reminder", Toast.LENGTH_SHORT).show();
                     }
@@ -134,7 +137,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     cancelReminder(UtililtyClass.NOTIFY_TO_BOOK_CODE);
                     cancelReminder(UtililtyClass.NOTIFY_TO_LEAVE_CODE);
                     cancelReminder(UtililtyClass.CLEAR_BOOKING_CODE);
-
+                    mIsReminderOn = false;
                     getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
                             .edit()
                             .putBoolean(UtililtyClass.IS_REMINDER_ON, false)

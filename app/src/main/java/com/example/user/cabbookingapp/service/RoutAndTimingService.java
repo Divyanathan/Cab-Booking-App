@@ -21,7 +21,9 @@ import com.example.user.cabbookingapp.util.UtililtyClass;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,11 @@ public class RoutAndTimingService extends IntentService {
 
             HttpConnection mHttpConnection = new HttpConnection();
             mHttpUrlHelper = (HttpUrlHelper) pIntent.getSerializableExtra(UtililtyClass.HTTP_URL_HELPER);
+
+
+//            byte[] lByte=pIntent.getByteArrayExtra(UtililtyClass.HTTP_URL_HELPER);
+//            ObjectInputStream lObjectInputStream=new ObjectInputStream(new ByteArrayInputStream(lByte));
+//            mHttpUrlHelper= (HttpUrlHelper) lObjectInputStream.readObject();
 
             //hitting the REST Api and get the response
             String mResponse = mHttpConnection.getTheResponse(mHttpUrlHelper);
@@ -102,49 +109,49 @@ public class RoutAndTimingService extends IntentService {
                     storeProfilePic(mResponse);
 
                 }
-                //book the cab
-                else if (getApi.equals(UtililtyClass.CAB_BOOKING_API)) {
-
-                    Log.d(TAG, "onHandleIntent: cab booking api response " + getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getString(UtililtyClass.USER_KEY, "no_key") + " " + mResponse);
-
-                    Intent lBookingIntent = new Intent(UtililtyClass.CAB_BOOKING_RECIVER);
-                    lBookingIntent.putExtra(UtililtyClass.CAB_BOOKING_INTENT, UtililtyClass.BOOKING_CAB);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(lBookingIntent);
-                }
-                //cancel the cab
-                else if (getApi.equals(UtililtyClass.CANCEL_BOOKING_API)) {
-
-                    Log.d(TAG, "onHandleIntent: cancel booking api response " + mResponse);
-                    Intent lCancelBookingIntent = new Intent(UtililtyClass.CAB_BOOKING_RECIVER);
-                    lCancelBookingIntent.putExtra(UtililtyClass.CAB_BOOKING_INTENT, UtililtyClass.CANCEL_BOOKING);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(lCancelBookingIntent);
-                }
-                //get today's booking details
-                else if (getApi.equals(UtililtyClass.GET_TODAY_BOOKING_API)) {
-
-                    ObjectMapper lObjectMapper = new ObjectMapper();
-                    GetTodayBookingJDO lGetBookingJDO = lObjectMapper.readValue(mResponse, GetTodayBookingJDO.class);
-                    Intent lGetTodayBookingIntent = new Intent(UtililtyClass.CAB_BOOKING_RECIVER);
-                    lGetTodayBookingIntent.putExtra(UtililtyClass.CAB_BOOKING_INTENT, UtililtyClass.GET_TODAY_BOOKING);
-                    //if the size of data is grater than one means cab booked today
-                    if (lGetBookingJDO.getBookingData().size() > 0) {
-                        lGetTodayBookingIntent.putExtra(UtililtyClass.IS_CAB_BOOKED_TODAY, true);
-                        getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE,Context.MODE_PRIVATE)
-                                .edit()
-                                .putString(UtililtyClass.USRE_PREFERED_STAFF,lGetBookingJDO.getBookingData().get(0).get("")).commit();
-                    } else {
-
-                        lGetTodayBookingIntent.putExtra(UtililtyClass.IS_CAB_BOOKED_TODAY, false);
-                    }
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(lGetTodayBookingIntent);
-                    Log.d(TAG, "onHandleIntent: size of the data " + lGetBookingJDO.getBookingData().size());
-
-                } else if (getApi.equals(UtililtyClass.GET_TODAY_BOOKING_API_FROM_RESUME)) {
-
-                } else if (getApi.equals(UtililtyClass.FEED_BACK_API)) {
-                    Log.d(TAG, "onHandleIntent: feedback Response " + mResponse);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(UtililtyClass.FEED_BACK_RECIVER));
-                }
+//                //book the cab
+//                else if (getApi.equals(UtililtyClass.CAB_BOOKING_API)) {
+//
+//                    Log.d(TAG, "onHandleIntent: cab booking api response " + getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getString(UtililtyClass.USER_KEY, "no_key") + " " + mResponse);
+//
+//                    Intent lBookingIntent = new Intent(UtililtyClass.CAB_BOOKING_RECIVER);
+//                    lBookingIntent.putExtra(UtililtyClass.CAB_BOOKING_INTENT, UtililtyClass.BOOKING_CAB);
+//                    LocalBroadcastManager.getInstance(this).sendBroadcast(lBookingIntent);
+//                }
+//                //cancel the cab
+//                else if (getApi.equals(UtililtyClass.CANCEL_BOOKING_API)) {
+//
+//                    Log.d(TAG, "onHandleIntent: cancel booking api response " + mResponse);
+//                    Intent lCancelBookingIntent = new Intent(UtililtyClass.CAB_BOOKING_RECIVER);
+//                    lCancelBookingIntent.putExtra(UtililtyClass.CAB_BOOKING_INTENT, UtililtyClass.CANCEL_BOOKING);
+//                    LocalBroadcastManager.getInstance(this).sendBroadcast(lCancelBookingIntent);
+//                }
+//                //get today's booking details
+//                else if (getApi.equals(UtililtyClass.GET_TODAY_BOOKING_API)) {
+//
+//                    ObjectMapper lObjectMapper = new ObjectMapper();
+//                    GetTodayBookingJDO lGetBookingJDO = lObjectMapper.readValue(mResponse, GetTodayBookingJDO.class);
+//                    Intent lGetTodayBookingIntent = new Intent(UtililtyClass.CAB_BOOKING_RECIVER);
+//                    lGetTodayBookingIntent.putExtra(UtililtyClass.CAB_BOOKING_INTENT, UtililtyClass.GET_TODAY_BOOKING);
+//                    //if the size of data is grater than one means cab booked today
+//                    if (lGetBookingJDO.getBookingData().size() > 0) {
+//                        lGetTodayBookingIntent.putExtra(UtililtyClass.IS_CAB_BOOKED_TODAY, true);
+//                        getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE,Context.MODE_PRIVATE)
+//                                .edit()
+//                                .putString(UtililtyClass.USRE_PREFERED_STAFF,lGetBookingJDO.getBookingData().get(0).get("")).commit();
+//                    } else {
+//
+//                        lGetTodayBookingIntent.putExtra(UtililtyClass.IS_CAB_BOOKED_TODAY, false);
+//                    }
+//                    LocalBroadcastManager.getInstance(this).sendBroadcast(lGetTodayBookingIntent);
+//                    Log.d(TAG, "onHandleIntent: size of the data " + lGetBookingJDO.getBookingData().size());
+//
+//                } else if (getApi.equals(UtililtyClass.GET_TODAY_BOOKING_API_FROM_RESUME)) {
+//
+//                } else if (getApi.equals(UtililtyClass.FEED_BACK_API)) {
+//                    Log.d(TAG, "onHandleIntent: feedback Response " + mResponse);
+//                    LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(UtililtyClass.FEED_BACK_RECIVER));
+//                }
             }
             //when we get the null response this block will get call
             else {
@@ -205,7 +212,7 @@ public class RoutAndTimingService extends IntentService {
 
             Intent lgoogleLoginIntent = new Intent(UtililtyClass.GOOGLE_LOGIN_RECIVER);
             Log.d(TAG, "storeProfilePic: " + lUerProfilePic.getUserEmailId().get(0).get("value"));
-            if (lUerProfilePic.getUserEmailId().get(0).get("value").contains("adaptavantcloud") || lUerProfilePic.getUserEmailId().get(0).get("value").contains("a-cti")) {
+            if (lUerProfilePic.getUserEmailId().get(0).get("value").endsWith("adaptavantcloud.com") || lUerProfilePic.getUserEmailId().get(0).get("value").endsWith("a-cti.com")|| lUerProfilePic.getUserEmailId().get(0).get("value").endsWith("full.co")|| lUerProfilePic.getUserEmailId().get(0).get("value").endsWith("full.io")) {
 
                 getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, MODE_PRIVATE)
                         .edit()

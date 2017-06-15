@@ -63,6 +63,7 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
 
         mProgressDialog = new ProgressDialog(this, R.style.MyDialogTheme);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage("Singing in");
 
         mSinginButton = (Button) findViewById(R.id.googleSignIn);
@@ -114,6 +115,7 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
         protected void onPreExecute() {
             super.onPreExecute();
             lProgressDialog.setMessage("Syncronizing");
+            mProgressDialog.setCancelable(false);
             lProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         }
 

@@ -156,7 +156,7 @@ public class FeedBackActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.submit_feedback) {
 
             if (CommonClass.isDataAvailable(FeedBackActivity.this)) {
-                if (!mFeedbackEditText.getText().toString().isEmpty()) {
+                if (!mFeedbackEditText.getText().toString().trim().isEmpty()) {
                     new SendFeedbackAsynTast().execute(mFeedbackEditText.getText().toString());
                 } else {
                     Toast.makeText(this, "Feedback Text Should not be empty ", Toast.LENGTH_SHORT).show();
