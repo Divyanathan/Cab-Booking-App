@@ -1,10 +1,11 @@
 package com.example.user.cabbookingapp.ui;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -12,7 +13,6 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -386,7 +386,7 @@ public class BookCabActivity extends AppCompatActivity {
     }
 
 
-    class BookCab extends AsyncTask<Void, Void, String> {
+    class BookCabAsyncTask extends AsyncTask<Void, Void, String> {
 
         ProgressDialog lProgressDialog;
         String lRouteID;
@@ -507,7 +507,7 @@ public class BookCabActivity extends AppCompatActivity {
         }
     }
 
-    class CancelBooking extends AsyncTask<Void, Void, String> {
+    class CancelBookingAsyncTask extends AsyncTask<Void, Void, String> {
 
         ProgressDialog lProgressDialoge;
 
@@ -603,7 +603,6 @@ public class BookCabActivity extends AppCompatActivity {
 
             //set  the location
             String lServiceName;
-
             String lRouteTimingID = getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getString(UtililtyClass.USER_PREFERED_SERVICE, null);
             Log.d(TAG, "setLoction: " + lRouteTimingID);
             Cursor lTimingCursor = mTimingTable.getTimingDetails(lRouteTimingID);
@@ -638,7 +637,24 @@ public class BookCabActivity extends AppCompatActivity {
             Log.d(TAG, "bookCabButton: is Location selected " + getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_LOCATION_SELECTED, false));
             if (getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_CAB_BOOKED, false)) {
 
-                new CancelBooking().execute();
+
+
+                new AlertDialog.Builder(BookCabActivity.this, R.style.Sign_out_theme)
+                        .setTitle("Are u want Cancel Booking?")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new CancelBookingAsyncTask().execute();
+                          }
+                        })
+                        .create()
+                        .show();
                 Log.d(TAG, "bookCabButton: cancelling the cab");
             } else {
                 if (!getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_LOCATION_SELECTED, false)) {
@@ -647,7 +663,7 @@ public class BookCabActivity extends AppCompatActivity {
                 } else if (!getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_TIME_SELCTED, false)) {
                     Toast.makeText(this, "Please Select the Timing ", Toast.LENGTH_SHORT).show();
                 } else if (mBookingTimeArraList.get(mBookingSlot).getBookingTime() >= getTime()) {
-                    new BookCab().execute();
+                    new BookCabAsyncTask().execute();
                 } else {
                     setGridViewAdapter();
                     Log.d(TAG, "bookCabButton: selected time " + mBookingTimeArraList.get(mBookingSlot).getBookingTime() + " current time " + getTime());
@@ -665,7 +681,7 @@ public class BookCabActivity extends AppCompatActivity {
 
     //choose from location
     public void chooseFromLoction(View pView) {
-        Log.d(TAG, "onClick: from location Textview");
+        Log.d(TAG, "onClick: from location TextView");
         Intent lSearchLocationIntent = new Intent(BookCabActivity.this, SearchLocationActivity.class);
         lSearchLocationIntent.putExtra(UtililtyClass.CHOOSE_LOCATION, UtililtyClass.FROM_LOCATION);
         startActivityForResult(lSearchLocationIntent, SEARCH_FROM_LOCATION_CODE);

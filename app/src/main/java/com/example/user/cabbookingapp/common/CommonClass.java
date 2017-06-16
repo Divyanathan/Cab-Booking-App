@@ -39,7 +39,6 @@ public class CommonClass {
         lHttpHelper.setHttpRequetMethod(pRequestMethod);
         lHttpHelper.setPayload(pPayLoad);
         lHttpHelper.setHttpHeader(lContentType);
-
         return lHttpHelper;
     }
 
@@ -63,7 +62,6 @@ public class CommonClass {
         }else {
             lAlarmManager.set(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(), mAlarmManagerPendingIntent);
         }
-
         Log.d("CommonClass", "setReminder : "+mCalender.getTimeInMillis());
     }
 

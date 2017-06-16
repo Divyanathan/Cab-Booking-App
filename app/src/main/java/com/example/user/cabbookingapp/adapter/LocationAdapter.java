@@ -37,6 +37,7 @@ public class LocationAdapter extends BaseAdapter {
         return lRoutView;
     }
 
+
     @Override
     public int getCount() {
         return mArrayList.size();

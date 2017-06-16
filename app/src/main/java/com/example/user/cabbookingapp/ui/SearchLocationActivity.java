@@ -38,8 +38,9 @@ public class SearchLocationActivity extends AppCompatActivity {
     ArrayList<RouteJDO> mRoutArraylist = new ArrayList<>();
     ArrayList<RouteJDO> mTempRoutArrayList = new ArrayList<>();
     String mSetLocation;
-    final int SEARCH_FROM_LOCATION_CODE=1;
-    final int SEARCH_TO_LOCATION_CODE=2;
+    boolean mIsResultFound = true;
+    final int SEARCH_FROM_LOCATION_CODE = 1;
+    final int SEARCH_TO_LOCATION_CODE = 2;
     private final int SPEECH_RECOGNIZAION_CODE = 3;
     private static final String TAG = "SearchLocationActivity";
 
@@ -59,28 +60,28 @@ public class SearchLocationActivity extends AppCompatActivity {
         LinearLayoutManager lLayoutManager = new LinearLayoutManager(this);
         lLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        mSetLocation=getIntent().getStringExtra(UtililtyClass.CHOOSE_LOCATION);
+        mSetLocation = getIntent().getStringExtra(UtililtyClass.CHOOSE_LOCATION);
         /**
          * set tht on item click listener for recycler view
          */
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Log.d(TAG, "onItemClick: "+mTempRoutArrayList.get(position).getRoutID());
-                Intent lLoctionResultIntnet=new Intent();
-                lLoctionResultIntnet.putExtra(UtililtyClass.ROUTE_NAME,mTempRoutArrayList.get(position).getRoutName());
-                lLoctionResultIntnet.putExtra(UtililtyClass.ROUTE_ID,mTempRoutArrayList.get(position).getRoutID());
-                if(mSetLocation.equals(UtililtyClass.FROM_LOCATION)) {
-                    setResult(SEARCH_FROM_LOCATION_CODE, lLoctionResultIntnet);
-                }else {
-                    setResult(SEARCH_TO_LOCATION_CODE,lLoctionResultIntnet);
+                if (mIsResultFound) {
+                    Log.d(TAG, "onItemClick: " + mTempRoutArrayList.get(position).getRoutID());
+                    Intent lLoctionResultIntnet = new Intent();
+                    lLoctionResultIntnet.putExtra(UtililtyClass.ROUTE_NAME, mTempRoutArrayList.get(position).getRoutName());
+                    lLoctionResultIntnet.putExtra(UtililtyClass.ROUTE_ID, mTempRoutArrayList.get(position).getRoutID());
+                    if (mSetLocation.equals(UtililtyClass.FROM_LOCATION)) {
+                        setResult(SEARCH_FROM_LOCATION_CODE, lLoctionResultIntnet);
+                    } else {
+                        setResult(SEARCH_TO_LOCATION_CODE, lLoctionResultIntnet);
+                    }
+                    finish();
+                    overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 }
-                finish();
-                overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
             }
         });
-
 
 
         /**
@@ -120,17 +121,24 @@ public class SearchLocationActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence pText, int start, int before, int count) {
-
-                Log.d(TAG, "onTextChanged: " + pText+" "+mRoutArraylist.size());
+                Log.d(TAG, "onTextChanged: " + pText + " " + mRoutArraylist.size());
                 String lSearchText = pText.toString().toLowerCase();
                 mTempRoutArrayList.clear();
+                boolean lisResultFound=false;
                 for (int i = 0; i < mRoutArraylist.size(); i++) {
                     if (mRoutArraylist.get(i).getRoutName().toLowerCase().contains(lSearchText)) {
                         mTempRoutArrayList.add(mRoutArraylist.get(i));
+                        lisResultFound=true;
                         Log.d(TAG, "onTextChanged: true");
-                    }else {
+                    } else {
                         Log.d(TAG, "onTextChanged: false");
                     }
+                }
+                if(lisResultFound){
+                    mIsResultFound=true;
+                }else {
+                    mIsResultFound=false;
+                    mTempRoutArrayList.add(new RouteJDO("No Match Found ","no_id"));
                 }
                 mSearchLocationAdapter.notifyDataSetChanged();
             }
@@ -152,7 +160,7 @@ public class SearchLocationActivity extends AppCompatActivity {
             lRoutCursor.moveToFirst();
             do {
 
-                RouteJDO lRouteJDO=new RouteJDO(lRoutCursor.getString(lRoutCursor.getColumnIndex(CabRouteTable.COLUMN_ROUTE_NAME)),lRoutCursor.getString(lRoutCursor.getColumnIndex(CabRouteTable.COLUMN_ID)));
+                RouteJDO lRouteJDO = new RouteJDO(lRoutCursor.getString(lRoutCursor.getColumnIndex(CabRouteTable.COLUMN_ROUTE_NAME)), lRoutCursor.getString(lRoutCursor.getColumnIndex(CabRouteTable.COLUMN_ID)));
 
                 mRoutArraylist.add(lRouteJDO);
             } while (lRoutCursor.moveToNext());
@@ -191,13 +199,13 @@ public class SearchLocationActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         finish();
-        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
         return true;
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_to_right);
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
     }
 }

@@ -29,7 +29,12 @@
 
 
             <View
-            android:background="@drawable/gradient_top"
+                android:background="@drawable/gradiant_top"
+                android:layout_width="match_parent"
+                android:layout_gravity="top"
+                android:layout_height="80dp"/>
+            <View
+            android:background="@drawable/gradient_bottom"
             android:layout_width="match_parent"
             android:layout_gravity="bottom"
             android:layout_height="80dp"/>
@@ -144,7 +149,7 @@
                     android:layout_height="20dp"
                     android:layout_marginTop="2dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Submit Feedback"
+                    android:text="Click Here To Send Feedback"
                     android:textColor="@color/black"
                     android:textSize="15dp"
                     android:textStyle="normal" />

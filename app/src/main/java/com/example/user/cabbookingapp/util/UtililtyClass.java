@@ -27,6 +27,8 @@ public class UtililtyClass {
     public static final String IS_USER_LOGED_IN = "login_status";
     public static final String IS_VALID_USER = "is_valid_user";
     public static final String IS_DATA_RETRIVED_COMPLETED = "is_data_retrived";
+    public static final String ACCESS_TOKEN = "access_token";
+
 
     /**
      * Urls
@@ -40,30 +42,10 @@ public class UtililtyClass {
     public static final String GET_BOOKING_TODAY_URL = "http://adaptiveufest.appspot.com/getBooking";
     public static final String PROFILE_PIC_URL = "https://www.googleapis.com/plus/v1/people/me?access_token=";
     /**
-     * Intent
-     */
-    public static final String HTTP_URL_HELPER = "http_url_helper";
-    public static final String GET_API_INTENT = "rest_api";
-    /**
      * BroadCast Receiver
      */
     public static final String ROUT_RECIVER = "rout_receiver";
     public static final String CAB_BOOKING_RECIVER = "cab_booking_receiver";
-    public static final String GOOGLE_LOGIN_RECIVER = "google_login_reciver";
-    public static final String FEED_BACK_RECIVER = "feed_back_receiver";
-
-    /**
-     * REST APIs
-     */
-    public static final String ROUT_API = "get_rout";
-    public static final String TIMING_API = "get_timing";
-    public static final String CONTACT_API = "get_contact";
-    public static final String CAB_BOOKING_API = "book_the_cab";
-    public static final String CANCEL_BOOKING_API = "cancel_the_booking";
-    public static final String PROFILE_API = "get_user_profile_pic";
-    public static final String GET_TODAY_BOOKING_API = "get_today_booking";
-    public static final String GET_TODAY_BOOKING_API_FROM_RESUME = "get_today_booking_from_resume";
-    public static final String FEED_BACK_API = "feed_back_api";
     /**
      * Booking Cab
      */

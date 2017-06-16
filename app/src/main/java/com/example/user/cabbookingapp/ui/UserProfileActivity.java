@@ -13,10 +13,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +39,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private static final String TAG = "UserProfileActivity";
     Switch mReminderSwitch;
     TextView mSingOutTextView;
+    TextView mReminderTextView;
     String mReminderTime = null;
     boolean mIsReminderOn = false;
     final int USER_PROFILE_PAGE_REQUEST_CODE = 3;
@@ -60,6 +64,7 @@ public class UserProfileActivity extends AppCompatActivity {
         //set the reminder switch value
         if (getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_REMINDER_ON, false)) {
             mReminderSwitch.setChecked(true);
+
         }
 
         //on click listener for switch
@@ -151,8 +156,14 @@ public class UserProfileActivity extends AppCompatActivity {
         mSingOutTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(UserProfileActivity.this, R.style.MyDialogTheme)
-                        .setTitle("Are u want to Sign out")
+//                TextView lTitleText = new TextView(UserProfileActivity.this);
+//                lTitleText.setText("Are u want to Sign out");
+//                lTitleText.setTextSize(20);
+//                lTitleText.setPadding(15,10,10,0);
+//                lTitleText.setGravity(Gravity.CENTER);
+//                lTitleText.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.cancel_booking_color));
+                new AlertDialog.Builder(UserProfileActivity.this, R.style.Sign_out_theme)
+                        .setTitle("Are u want to Sign out?")
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -180,6 +191,8 @@ public class UserProfileActivity extends AppCompatActivity {
                                     finishAffinity();
                                     Intent lIntent = new Intent(UserProfileActivity.this, LoginActivity.class);
                                     startActivity(lIntent);
+                                }else {
+                                    
                                 }
 //                                Intent lIntent = new Intent(UserProfileActivity.this, LoginActivity.class);
 //                                lIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -28,6 +28,13 @@
 
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/white</item>
+
+    </style>
+    <style name="Sign_out_theme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/white</item>
+        <item name="android:textSize">@dimen/dialoge_text_size</item>
+        <item name="android:textColor">@color/cancel_booking_color</item>
+
     </style>
 
     <style name="MenuTitleColor" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
