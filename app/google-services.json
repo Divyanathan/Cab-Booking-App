@@ -1,25 +1,27 @@
 {
   "project_info": {
-    "project_number": "41392016827",
-    "project_id": "cab-booking-app"
+    "project_number": "266228125590",
+    "firebase_url": "https://cabapp-6a8a6.firebaseio.com",
+    "project_id": "cabapp-6a8a6",
+    "storage_bucket": "cabapp-6a8a6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:41392016827:android:7ca2de6e99f7bf07",
+        "mobilesdk_app_id": "1:266228125590:android:656103455e46b093",
         "android_client_info": {
-          "package_name": "com.example.user.cabapp"
+          "package_name": "com.adaptavant.cabapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "41392016827-ppnds39le8hgob164n397kear6mtoogk.apps.googleusercontent.com",
+          "client_id": "266228125590-vfs8lht2q0dcj2b5pj42l5nrn9j781gu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAmRtTtDfENEN4x4-uwIQN304vU_RCX-xw"
+          "current_key": "AIzaSyCwaXQw9irqCD4XbEIGbJ9v1ktSSGuL5UM"
         }
       ],
       "services": {
@@ -31,46 +33,7 @@
           "other_platform_oauth_client": []
         },
         "ads_service": {
-          "status": 1
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:41392016827:android:4c13b0f9aae60354",
-        "android_client_info": {
-          "package_name": "com.example.user.cabbookingapp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "41392016827-113b1likr8fe86dr18lq67bnir0dhiit.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.user.cabbookingapp",
-            "certificate_hash": "f8d8ac6693ba6dcaa96d7656842b39e4bb429136"
-          }
-        },
-        {
-          "client_id": "41392016827-ppnds39le8hgob164n397kear6mtoogk.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAmRtTtDfENEN4x4-uwIQN304vU_RCX-xw"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

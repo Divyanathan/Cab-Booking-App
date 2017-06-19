@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.cabbookingapp.ui.SplashScreenActivity">
+    android:background="@color/login_screen_theme"
+    tools:context="com.adaptavant.cabapp.ui.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/cabImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/cab"
+        android:src="@mipmap/car_logo"
         android:layout_centerInParent="true"
         />
 </RelativeLayout>

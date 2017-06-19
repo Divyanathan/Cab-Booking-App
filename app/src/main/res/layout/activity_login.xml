@@ -1,43 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background_theme"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.cabbookingapp.ui.LoginActivity">
+    android:background="@color/login_screen_theme"
+    tools:context="com.adaptavant.cabapp.ui.LoginActivity">
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="145dp"
+        android:text="Cab App"
+        android:textSize="28dp"
+        android:textColor="@color/white"
+
+        />
 
     <ImageView
 
         android:id="@+id/cabLoginImage"
-        android:layout_width="138dp"
-        android:layout_height="47dp"
+        android:layout_width="159dp"
+        android:layout_height="159dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="241dp"
         android:src="@mipmap/car_logo" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="57dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:src="@mipmap/google_logo"
+            android:background="@drawable/google_image_drawble"
+            android:padding="10dp"
+            android:layout_toLeftOf="@+id/googleSignIn"/>
 
-    <Button
-        android:id="@+id/googleSignIn"
-        android:layout_width="185dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/cabLoginImage"
-        android:layout_marginTop="124dp"
-        android:layout_marginLeft="88dp"
-        android:layout_marginRight="87dp"
-        android:paddingLeft="2dp"
-        android:drawableLeft="@drawable/google_logo"
-        android:background="@drawable/rectangle_drawble"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textSize="12dp"
-        android:text="@string/common_signin_button_text_long"
-        android:textColor="@android:color/white">
+        <Button
+            android:id="@+id/googleSignIn"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/google_button_drawble"
+            android:paddingBottom="5dp"
+            android:paddingLeft="2dp"
+            android:paddingTop="5dp"
+            android:text="Sign in with Google"
+            android:textColor="@android:color/white"
+            android:textSize="14dp">
 
-    </Button>
+        </Button>
 
+    </LinearLayout>
+    
 
 
 

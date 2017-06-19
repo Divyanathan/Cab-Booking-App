@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Cab Booking App</string>
+    <string name="app_name">CabApp</string>
     <string name="sing_in_activity">Sign in</string>
 </resources>

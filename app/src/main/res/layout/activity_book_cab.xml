@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_theme"
     android:orientation="vertical"
-    tools:context="com.example.user.cabbookingapp.ui.BookCabActivity">
+    tools:context="com.adaptavant.cabapp.ui.BookCabActivity">
 
     <LinearLayout
         android:id="@+id/headerLayout"

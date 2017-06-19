@@ -1,4 +1,4 @@
-package com.example.user.cabbookingapp;
+package com.adaptavant.cabapp;
 
 import org.junit.Test;
 
