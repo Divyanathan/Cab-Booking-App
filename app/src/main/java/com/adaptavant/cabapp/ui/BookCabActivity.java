@@ -18,7 +18,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -487,7 +490,11 @@ public class BookCabActivity extends AppCompatActivity {
             super.onPostExecute(pResponse);
             lProgressDialog.dismiss();
             if (pResponse != null && !pResponse.isEmpty()) {
-                Toast.makeText(BookCabActivity.this, "Booking Confirmed", Toast.LENGTH_SHORT).show();
+
+//                Toast lBookingToast=Toast.makeText(BookCabActivity.this, "Booking Confirmed", Toast.LENGTH_SHORT);
+//                lBookingToast.setGravity(Gravity.CENTER,0,0);
+//                lBookingToast.show();
+                showToast(UtililtyClass.BOOKING_CONFIRMED);
                 int lBookingTime = mTimingTable.getTheBookingTime(lRouteTimingID);
                 getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
                         .edit()
@@ -495,6 +502,7 @@ public class BookCabActivity extends AppCompatActivity {
                         .putInt(UtililtyClass.USER_REMINDER_TIME, lBookingTime)
                         .putBoolean(UtililtyClass.IS_CAB_BOOKED, true)
                         .commit();
+
 
                 changeValueForbookingCab();
                 Log.d(TAG, "onPostExecute: cut off time " + lBookingTime);
@@ -520,6 +528,17 @@ public class BookCabActivity extends AppCompatActivity {
                 Log.d(TAG, "onPostExecute: response null");
             }
         }
+    }
+
+    private void showToast(String pToastMessage) {
+        Toast lBookingToast= new Toast(BookCabActivity.this);
+        LayoutInflater lLayoutInflater=getLayoutInflater();
+        View lCustomToastView = lLayoutInflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.custom_toast_layout));
+        TextView lToastTextView=(TextView) lCustomToastView.findViewById(R.id.toastTextView);
+        lToastTextView.setText(pToastMessage);
+        lBookingToast.setGravity(Gravity.CENTER,0,0);
+        lBookingToast.setView(lCustomToastView);
+        lBookingToast.show();
     }
 
     class CancelBookingAsyncTask extends AsyncTask<Void, Void, String> {
@@ -551,7 +570,10 @@ public class BookCabActivity extends AppCompatActivity {
             lProgressDialoge.dismiss();
             if (pRespose != null) {
                 changeValuesForCaceledBooking();
-                Toast.makeText(BookCabActivity.this, "Cancelled Booking", Toast.LENGTH_SHORT).show();
+//                Toast lCancleToast = Toast.makeText(BookCabActivity.this, "Cancelled Booking", Toast.LENGTH_SHORT);
+//                lCancleToast.setGravity(Gravity.CENTER,0,0);
+//                lCancleToast.show();
+                showToast(UtililtyClass.BOOKING_CANCELLED);
 
 
             }

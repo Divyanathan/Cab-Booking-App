@@ -92,6 +92,9 @@ public class UtililtyClass {
     public static final String GET_TODAY_BOOKING = "get_today_booking";
     public static final String USER_REMINDER_TIME="reminder_time";
     public static final String BOOKIN_DATE="date";
+    public static final String BOOKING_CONFIRMED="Booking confirmed successfully";
+    public static final String BOOKING_CANCELLED="Booking cancelled successfully";
+
 
     /**
      * set the reminder
