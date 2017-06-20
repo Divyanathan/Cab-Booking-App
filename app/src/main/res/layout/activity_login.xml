@@ -8,26 +8,28 @@
     tools:context="com.adaptavant.cabapp.ui.LoginActivity">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="145dp"
-        android:text="Cab App"
-        android:textSize="28dp"
-        android:textColor="@color/white"
-
-        />
-
     <ImageView
 
         android:id="@+id/cabLoginImage"
         android:layout_width="159dp"
         android:layout_height="159dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="241dp"
+        android:layout_centerVertical="true"
         android:src="@mipmap/car_logo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp"
+        android:layout_above="@id/cabLoginImage"
+        android:text="Cab App"
+        android:textSize="28dp"
+        android:textColor="@color/white"
+
+        />
+
+
 
     <LinearLayout
         android:layout_width="wrap_content"

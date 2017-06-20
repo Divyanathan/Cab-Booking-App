@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserProfilePic {
+public class UserProfilePicJDO {
 
     @JsonProperty("image")
     HashMap<String,String> UserImage;

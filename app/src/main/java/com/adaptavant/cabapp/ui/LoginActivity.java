@@ -32,7 +32,7 @@ import java.io.IOException;
 
 public class LoginActivity extends Activity implements GoogleApiClient.OnConnectionFailedListener {
 
-    Button mSinginButton;
+    Button mSignInButton;
     ProgressDialog mProgressDialog;
     private static final String TAG = "LoginActivity";
     private int REQ_CODE = 101;
@@ -57,8 +57,8 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage("Signing in");
-        mSinginButton = (Button) findViewById(R.id.googleSignIn);
-        mSinginButton.setOnClickListener(new View.OnClickListener() {
+        mSignInButton = (Button) findViewById(R.id.googleSignIn);
+        mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (CommonClass.isDataAvailable(LoginActivity.this)) {
@@ -68,7 +68,7 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
                     lGoogleAccountIntent.putExtra("overrideCustomTheme", 0);
 
                     startActivityForResult(lGoogleAccountIntent, REQ_CODE);
-                    Log.d(TAG, "googleSingIn: ");
+                    Log.d(TAG, "googleSignIn: ");
                 } else {
                     Toast.makeText(LoginActivity.this, "Check your internet connection ", Toast.LENGTH_SHORT).show();
                 }
@@ -94,7 +94,7 @@ public class LoginActivity extends Activity implements GoogleApiClient.OnConnect
                 if (lUserEmail.endsWith("adaptavantcloud.com") || lUserEmail.endsWith("a-cti.com") || lUserEmail.endsWith("full.co") || lUserEmail.endsWith("full.io")) {
                     new GoogleSignInAsyncTask().execute(lAccout);
                 } else {
-                    Toast.makeText(this, "Sorry You Are not Authorized ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Sorry you are not Authorized ", Toast.LENGTH_SHORT).show();
                 }
             }
         }

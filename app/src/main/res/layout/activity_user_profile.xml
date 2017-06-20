@@ -31,7 +31,8 @@
                 android:background="@drawable/gradiant_top"
                 android:layout_width="match_parent"
                 android:layout_gravity="top"
-                android:layout_height="80dp"/>
+                android:layout_height="80dp"
+                app:layout_collapseMode="pin"/>
             <View
             android:background="@drawable/gradient_bottom"
             android:layout_width="match_parent"

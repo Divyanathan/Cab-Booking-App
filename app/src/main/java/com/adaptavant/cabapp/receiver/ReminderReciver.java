@@ -8,8 +8,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.adaptavant.cabapp.R;
@@ -181,8 +185,16 @@ public class ReminderReciver extends BroadcastReceiver {
 
     }
 
-    //send the notification
+    /**
+     *
+     * @param pContext
+     * @param pNotificationMsg  notification message to display
+     *
+     */
     void notifyUSer(Context pContext, String pNotificationMsg) {
+
+//        Drawable lAppIconDrawble= ContextCompat.getDrawable(mContext,R.drawable.app_icon);
+//        Bitmap lAppIconBitmap=((BitmapDrawable)lAppIconDrawble).getBitmap();
         final int PENDING_INTENT_ID = 5;
         Notification lNotification = null;
         Intent lIntent = new Intent(pContext, BookCabActivity.class);
@@ -191,7 +203,10 @@ public class ReminderReciver extends BroadcastReceiver {
             lNotification = new Notification.Builder(pContext)
                     .setContentTitle("Cab Booking notification")
                     .setContentText(pNotificationMsg)
-                    .setSmallIcon(R.mipmap.car_logo)
+//                    .setLargeIcon(lAppIconBitmap)
+                    .setSmallIcon(R.drawable.app_icon)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setAutoCancel(true)
                     .setContentIntent(PendingIntent.getActivity(pContext, PENDING_INTENT_ID,lIntent, PendingIntent.FLAG_ONE_SHOT))
                     .build();
         }

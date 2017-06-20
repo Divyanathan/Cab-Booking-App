@@ -1,6 +1,7 @@
 package com.adaptavant.cabapp.ui;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.speech.RecognizerIntent;
@@ -12,14 +13,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.adaptavant.cabapp.R;
 import com.adaptavant.cabapp.LocationAdapter;
+import com.adaptavant.cabapp.R;
 import com.adaptavant.cabapp.common.CommonClass;
 import com.adaptavant.cabapp.datbase.CabRouteTable;
 import com.adaptavant.cabapp.jdo.RouteJDO;
@@ -68,6 +70,7 @@ public class SearchLocationActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (mIsResultFound) {
+                    hideKeyboard();
                     Log.d(TAG, "onItemClick: " + mTempRoutArrayList.get(position).getRoutID());
                     Intent lLoctionResultIntnet = new Intent();
                     lLoctionResultIntnet.putExtra(UtililtyClass.ROUTE_NAME, mTempRoutArrayList.get(position).getRoutName());
@@ -124,21 +127,21 @@ public class SearchLocationActivity extends AppCompatActivity {
                 Log.d(TAG, "onTextChanged: " + pText + " " + mRoutArraylist.size());
                 String lSearchText = pText.toString().toLowerCase();
                 mTempRoutArrayList.clear();
-                boolean lisResultFound=false;
+                boolean lisResultFound = false;
                 for (int i = 0; i < mRoutArraylist.size(); i++) {
                     if (mRoutArraylist.get(i).getRoutName().toLowerCase().contains(lSearchText)) {
                         mTempRoutArrayList.add(mRoutArraylist.get(i));
-                        lisResultFound=true;
+                        lisResultFound = true;
                         Log.d(TAG, "onTextChanged: true");
                     } else {
                         Log.d(TAG, "onTextChanged: false");
                     }
                 }
-                if(lisResultFound){
-                    mIsResultFound=true;
-                }else {
-                    mIsResultFound=false;
-                    mTempRoutArrayList.add(new RouteJDO("No Match Found ","no_id"));
+                if (lisResultFound) {
+                    mIsResultFound = true;
+                } else {
+                    mIsResultFound = false;
+                    mTempRoutArrayList.add(new RouteJDO("No Match Found ", "no_id"));
                 }
                 mSearchLocationAdapter.notifyDataSetChanged();
             }
@@ -199,9 +202,15 @@ public class SearchLocationActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        hideKeyboard();
         finish();
         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
         return true;
+    }
+
+     void hideKeyboard() {
+        InputMethodManager linputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        linputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     @Override

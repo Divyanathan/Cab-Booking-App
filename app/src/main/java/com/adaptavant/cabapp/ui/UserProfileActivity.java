@@ -162,7 +162,7 @@ public class UserProfileActivity extends AppCompatActivity {
 //                lTitleText.setGravity(Gravity.CENTER);
 //                lTitleText.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.cancel_booking_color));
                 new AlertDialog.Builder(UserProfileActivity.this, R.style.Sign_out_theme)
-                        .setTitle("Are u want to Sign out?")
+                        .setTitle("Are you want to Sign out?")
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

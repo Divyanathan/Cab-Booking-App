@@ -14,7 +14,7 @@ import com.adaptavant.cabapp.httphelper.HttpUrlHelper;
 import com.adaptavant.cabapp.jdo.CustomerJDO;
 import com.adaptavant.cabapp.jdo.TimingsJDO;
 import com.adaptavant.cabapp.jdo.UserDetailJDO;
-import com.adaptavant.cabapp.jdo.UserProfilePic;
+import com.adaptavant.cabapp.jdo.UserProfilePicJDO;
 import com.adaptavant.cabapp.util.UtililtyClass;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -174,7 +174,7 @@ public class RestApiService extends IntentService {
 
         ObjectMapper lObjecMaper = new ObjectMapper();
         try {
-            UserProfilePic lUerProfilePic = lObjecMaper.readValue(pProfilePicResponse, UserProfilePic.class);
+            UserProfilePicJDO lUerProfilePic = lObjecMaper.readValue(pProfilePicResponse, UserProfilePicJDO.class);
             String lEmail = lUerProfilePic.getUserEmailId().get(0).get("value");
             getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE)
                     .edit()

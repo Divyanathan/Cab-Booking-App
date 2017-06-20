@@ -17,7 +17,12 @@ import java.net.URL;
 public class HttpConnection {
 
 
-    //hit the api and return to the response
+    /**
+     *
+     * @param pHttpUrlHelper HttpHelperClass has the Url ,request Method, Request Body, and Header Key and Value
+     * @return
+     * It Returns Response String...
+     */
     public String getHttpResponse(HttpUrlHelper pHttpUrlHelper) {
 
         URL mUrl;

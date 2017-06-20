@@ -15,12 +15,14 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:textCursorDrawable="@drawable/text_cusor_color"
         android:gravity="top"
         android:background="@color/white"
-        android:inputType="textCapSentences"
+        android:inputType="textCapSentences|textMultiLine|textNoSuggestions"
+        android:scrollbars="vertical"
         android:hint="Kindly submit your reviews and suggestion..."
         />
+        <!--android:inputType="textCapSentences"-->
 
 </LinearLayout>

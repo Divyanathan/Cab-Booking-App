@@ -1,7 +1,6 @@
 package com.adaptavant.cabapp.ui;
 
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -194,8 +193,8 @@ public class BookCabActivity extends AppCompatActivity {
         }
 
         //cancel the notification
-        NotificationManager lNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        lNotificationManager.cancel(UtililtyClass.NOTIFICATION_ID);
+//        NotificationManager lNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        lNotificationManager.cancel(UtililtyClass.NOTIFICATION_ID);
 
         //register the broadcast reciever
         LocalBroadcastManager.getInstance(this).registerReceiver(mCabBookingReciever, new IntentFilter(UtililtyClass.CAB_BOOKING_RECIVER));
@@ -248,7 +247,7 @@ public class BookCabActivity extends AppCompatActivity {
                                 changeValueForbookingCab();
                             }
                             if (!mIsLocationSelectedByUser) {
-                                setLoction();
+                                setLocation();
                             } else {
                                 mIsLocationSelectedByUser = false;
                             }
@@ -292,6 +291,7 @@ public class BookCabActivity extends AppCompatActivity {
             lProgressDialog = new ProgressDialog(BookCabActivity.this, R.style.MyDialogTheme);
             lProgressDialog.setMessage("Loading Please Wait");
             lProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            lProgressDialog.setCancelable(false);
             lProgressDialog.show();
         }
 
@@ -354,7 +354,7 @@ public class BookCabActivity extends AppCompatActivity {
             setGridViewAdapter();
             if (pIsCabBooked) {
                 if (!mIsLocationSelectedByUser)
-                    setLoction();
+                    setLocation();
                 else
                     mIsLocationSelectedByUser = false;
                 changeValueForbookingCab();
@@ -366,7 +366,7 @@ public class BookCabActivity extends AppCompatActivity {
 
             } else {
                 if (!mIsLocationSelectedByUser)
-                    setLoction();
+                    setLocation();
                 else
                     mIsLocationSelectedByUser = false;
                 changeValuesForCaceledBooking();
@@ -606,7 +606,7 @@ public class BookCabActivity extends AppCompatActivity {
         }
     }
 
-    private void setLoction() {
+    private void setLocation() {
 
         String lPreferredRoute = getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getString(UtililtyClass.USRE_PREFERED_STAFF, null);
         if (lPreferredRoute != null && !lPreferredRoute.isEmpty()) {
@@ -615,12 +615,12 @@ public class BookCabActivity extends AppCompatActivity {
                     .edit()
                     .putBoolean(UtililtyClass.IS_LOCATION_SELECTED, true)
                     .commit();
-            Log.d(TAG, "setLoction: is location selected " + getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_LOCATION_SELECTED, false));
+            Log.d(TAG, "setLocation: is location selected " + getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getBoolean(UtililtyClass.IS_LOCATION_SELECTED, false));
 
             //set  the location
             String lServiceName;
             String lRouteTimingID = getSharedPreferences(UtililtyClass.MY_SHARED_PREFRENCE, Context.MODE_PRIVATE).getString(UtililtyClass.USER_PREFERED_SERVICE, null);
-            Log.d(TAG, "setLoction: " + lRouteTimingID);
+            Log.d(TAG, "setLocation: " + lRouteTimingID);
             Cursor lTimingCursor = mTimingTable.getTimingDetails(lRouteTimingID);
             if (lTimingCursor.getCount() > 0 && lTimingCursor.moveToFirst()) {
 
@@ -656,7 +656,7 @@ public class BookCabActivity extends AppCompatActivity {
 
 
                 new AlertDialog.Builder(BookCabActivity.this, R.style.Sign_out_theme)
-                        .setTitle("Are u want Cancel Booking?")
+                        .setTitle("Are you want to Cancel Booking?")
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

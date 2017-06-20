@@ -42,8 +42,13 @@ public class CommonClass {
         return lHttpHelper;
     }
 
-    //set the time
+    /**
+     * Get Time from calendar
+     * @param pTimeInMinutes the time in minutes
+     * @return a calendar instance
+     */
     public static Calendar getTheTimeFromCallender(int pTimeInMinutes) {
+
         Calendar lCalender = Calendar.getInstance();
         lCalender.set(Calendar.HOUR_OF_DAY, pTimeInMinutes / 60);
         lCalender.set(Calendar.MINUTE, pTimeInMinutes % 60);
